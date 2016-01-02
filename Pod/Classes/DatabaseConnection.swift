@@ -140,7 +140,7 @@ extension DatabaseConnection {
 
 // MARK: - Helpers
 extension DatabaseConnection {
-    func containsTable(tableName: String) throws -> Bool {
+    public func containsTable(tableName: String) throws -> Bool {
         let query = "SELECT name FROM sqlite_master WHERE type='table' AND name=?"
         
         let statement = try executeQuery(query, bindings: [tableName])
