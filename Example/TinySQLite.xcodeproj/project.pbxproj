@@ -16,7 +16,7 @@
 		607FACE51AFB9204008FA782 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = Tests.xctest; path = TinySQLite_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		9F30EBCA0B262BABF5F37202 /* TinySQLite.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = TinySQLite.podspec; path = ../TinySQLite.podspec; sourceTree = "<group>"; };
+		9F30EBCA0B262BABF5F37202 /* TinySQLite.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = TinySQLite.podspec; path = ../TinySQLite.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		B01864CA4A7B9692E199423C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		C8177FA6DA7740BFCFA568D7 /* Pods-TinySQLite_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinySQLite_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TinySQLite_Tests/Pods-TinySQLite_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		E23297116B169B60DBA1F01B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -127,6 +127,7 @@
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
