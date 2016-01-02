@@ -49,7 +49,7 @@ public class Statement {
     }()
     
     
-    init(_ query: String, handle: COpaquePointer = nil) {
+    public init(_ query: String, handle: COpaquePointer = nil) {
         self.query = query
         self.handle = handle
     }

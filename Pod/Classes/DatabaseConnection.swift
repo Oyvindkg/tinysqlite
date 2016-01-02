@@ -80,9 +80,9 @@ public class DatabaseConnection {
     private var handle: COpaquePointer = nil
     private let path: String
     
-    var isOpen: Bool = false
+    public var isOpen: Bool = false
     
-    init(path: String) {
+    public init(path: String) {
         self.path = path
     }
     

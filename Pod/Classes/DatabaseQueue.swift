@@ -15,7 +15,7 @@ public class DatabaseQueue {
     
     private let database:       DatabaseConnection
     
-    init(path: String) {
+    public init(path: String) {
         database = DatabaseConnection(path: path)
     }
     
