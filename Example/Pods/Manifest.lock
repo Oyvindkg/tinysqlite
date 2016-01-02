@@ -1,0 +1,14 @@
+PODS:
+  - TinySQLite (0.1.0)
+
+DEPENDENCIES:
+  - TinySQLite (from `../`)
+
+EXTERNAL SOURCES:
+  TinySQLite:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  TinySQLite: 6862d1a4087425c7fd16f947acbae7ecd52aed2c
+
+COCOAPODS: 0.39.0

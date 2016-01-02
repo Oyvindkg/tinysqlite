@@ -1,0 +1,620 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		08EB690F99D0541DDDB641ACACD95C17 /* TinySQLite-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F39C2644A20F62E4E8E1B701ADFFF4 /* TinySQLite-dummy.m */; };
+		1FCCC3DCF9A790354FEAB9159CB6DDA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
+		63C2C67A622DB18F3E32FB6CF18E6D3D /* TinySQLite-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E2FF6264964E75B1C6FF2EF25F50ECBE /* TinySQLite-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		746F27F39F30E25EE61F77515BBD1BC0 /* TinySQLite.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 114394898C88386F568730E2CBF527B0 /* TinySQLite.bundle */; };
+		8B6BB3B87FB666719551A068C053DC2C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */; };
+		B7E37AFDEDB3FCA0D91832698F9A87D2 /* ReplaceMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6C3F14395E8F6CF5C5549B329A8411 /* ReplaceMe.swift */; };
+		FDEF8A6A93F15FA71C86AA37E138E60D /* Pods-TinySQLite_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FD2D785B31C282B6214823575ED05C4 /* Pods-TinySQLite_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FFE08D66328C4FAFD6D412240CE033D5 /* Pods-TinySQLite_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EB50BC65A8EAB821D7AAA4BD037B9BDE /* Pods-TinySQLite_Tests-dummy.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		25B3960B7B2E82B62A2DE05A4974E33A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C7B8245F7285C72EC5FDBCB5D2C7C9E;
+			remoteInfo = "TinySQLite-TinySQLite";
+		};
+		98FF147351551C1AF75889DC7A5CD0CF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BD16793300DD0CF9463A273D2C7E641E;
+			remoteInfo = TinySQLite;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0636674134F4083B0B762B83BB808F53 /* TinySQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TinySQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		114394898C88386F568730E2CBF527B0 /* TinySQLite.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TinySQLite.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FD2D785B31C282B6214823575ED05C4 /* Pods-TinySQLite_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-TinySQLite_Tests-umbrella.h"; sourceTree = "<group>"; };
+		2061C188241FB3CB11968AEE89CE331C /* TinySQLite-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TinySQLite-prefix.pch"; sourceTree = "<group>"; };
+		2643A62D53FFB839A1812D095EC1092A /* Pods_TinySQLite_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinySQLite_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E40929C22893EFA076915BD9FD7F8B2 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		37E27E06D3D5E565EA3702E9D286CA29 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		71C8EA5EE6B54705BBC08CE9E8830500 /* Pods-TinySQLite_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TinySQLite_Tests-resources.sh"; sourceTree = "<group>"; };
+		7A1079A8726D9C1A6F13AFA550EA2A72 /* Pods-TinySQLite_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TinySQLite_Tests-frameworks.sh"; sourceTree = "<group>"; };
+		9598189C14E98C892D9049DEDDAF63F8 /* Pods-TinySQLite_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TinySQLite_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		9C6C3F14395E8F6CF5C5549B329A8411 /* ReplaceMe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReplaceMe.swift; sourceTree = "<group>"; };
+		A2F39C2644A20F62E4E8E1B701ADFFF4 /* TinySQLite-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TinySQLite-dummy.m"; sourceTree = "<group>"; };
+		AE4F7D5C283F80DF605FF8B71D02EAD0 /* Pods-TinySQLite_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TinySQLite_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		B2708E26610E46B4414576FED70C4196 /* TinySQLite.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = TinySQLite.modulemap; sourceTree = "<group>"; };
+		B5C741917C30F8E23A34ADD3B007C3C2 /* Pods-TinySQLite_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TinySQLite_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		BEF28EB7C41B01F79C52FA392D2AC458 /* TinySQLite.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TinySQLite.xcconfig; sourceTree = "<group>"; };
+		D3F8D457A419512852E1B510B7DD52D6 /* Pods-TinySQLite_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TinySQLite_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
+		E2FF6264964E75B1C6FF2EF25F50ECBE /* TinySQLite-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TinySQLite-umbrella.h"; sourceTree = "<group>"; };
+		E58C576883EC048166567CDBB4D75F91 /* Pods-TinySQLite_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-TinySQLite_Tests.modulemap"; sourceTree = "<group>"; };
+		EB50BC65A8EAB821D7AAA4BD037B9BDE /* Pods-TinySQLite_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TinySQLite_Tests-dummy.m"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2119F6D9AD45C6D698AC832990CF90EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1FCCC3DCF9A790354FEAB9159CB6DDA5 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4431DB387822D1972B4FABAACC363AD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE61CAFF48F1DA07F02945734955B5EA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B6BB3B87FB666719551A068C053DC2C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		661C5B408D10FE494E1EA3CFB3BDF0B2 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				BB660AD1F8A78A8731C47C928ED3BDEF /* Classes */,
+			);
+			path = Pod;
+			sourceTree = "<group>";
+		};
+		7A54860CB7CA09C4A9DE56EDCB6A2A3C /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				B781420A6530470E18B3F6DC8D1D8049 /* Pods-TinySQLite_Tests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
+				A08188EC5570CDC3B7630317D94B0B61 /* Development Pods */,
+				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
+				965FA80E0E1065AF4F1FFBF530AFF9DD /* Products */,
+				7A54860CB7CA09C4A9DE56EDCB6A2A3C /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		7EC415ADA986ECF39A0FBBA205A3A510 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				37E27E06D3D5E565EA3702E9D286CA29 /* Info.plist */,
+				B2708E26610E46B4414576FED70C4196 /* TinySQLite.modulemap */,
+				BEF28EB7C41B01F79C52FA392D2AC458 /* TinySQLite.xcconfig */,
+				A2F39C2644A20F62E4E8E1B701ADFFF4 /* TinySQLite-dummy.m */,
+				2061C188241FB3CB11968AEE89CE331C /* TinySQLite-prefix.pch */,
+				E2FF6264964E75B1C6FF2EF25F50ECBE /* TinySQLite-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/TinySQLite";
+			sourceTree = "<group>";
+		};
+		85B77A10315204487E5A214B0A384055 /* TinySQLite */ = {
+			isa = PBXGroup;
+			children = (
+				661C5B408D10FE494E1EA3CFB3BDF0B2 /* Pod */,
+				7EC415ADA986ECF39A0FBBA205A3A510 /* Support Files */,
+			);
+			name = TinySQLite;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		965FA80E0E1065AF4F1FFBF530AFF9DD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2643A62D53FFB839A1812D095EC1092A /* Pods_TinySQLite_Tests.framework */,
+				114394898C88386F568730E2CBF527B0 /* TinySQLite.bundle */,
+				0636674134F4083B0B762B83BB808F53 /* TinySQLite.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A08188EC5570CDC3B7630317D94B0B61 /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				85B77A10315204487E5A214B0A384055 /* TinySQLite */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		B781420A6530470E18B3F6DC8D1D8049 /* Pods-TinySQLite_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				2E40929C22893EFA076915BD9FD7F8B2 /* Info.plist */,
+				E58C576883EC048166567CDBB4D75F91 /* Pods-TinySQLite_Tests.modulemap */,
+				B5C741917C30F8E23A34ADD3B007C3C2 /* Pods-TinySQLite_Tests-acknowledgements.markdown */,
+				D3F8D457A419512852E1B510B7DD52D6 /* Pods-TinySQLite_Tests-acknowledgements.plist */,
+				EB50BC65A8EAB821D7AAA4BD037B9BDE /* Pods-TinySQLite_Tests-dummy.m */,
+				7A1079A8726D9C1A6F13AFA550EA2A72 /* Pods-TinySQLite_Tests-frameworks.sh */,
+				71C8EA5EE6B54705BBC08CE9E8830500 /* Pods-TinySQLite_Tests-resources.sh */,
+				1FD2D785B31C282B6214823575ED05C4 /* Pods-TinySQLite_Tests-umbrella.h */,
+				AE4F7D5C283F80DF605FF8B71D02EAD0 /* Pods-TinySQLite_Tests.debug.xcconfig */,
+				9598189C14E98C892D9049DEDDAF63F8 /* Pods-TinySQLite_Tests.release.xcconfig */,
+			);
+			name = "Pods-TinySQLite_Tests";
+			path = "Target Support Files/Pods-TinySQLite_Tests";
+			sourceTree = "<group>";
+		};
+		BB660AD1F8A78A8731C47C928ED3BDEF /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				9C6C3F14395E8F6CF5C5549B329A8411 /* ReplaceMe.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BF6342C8B29F4CEEA088EFF7AB4DE362 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BF6342C8B29F4CEEA088EFF7AB4DE362 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				3E4E89230EF59BC255123B67864ACF77 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		5CDA179FB6A6E4D15F59504984E524C1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63C2C67A622DB18F3E32FB6CF18E6D3D /* TinySQLite-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E07A075DB8DA79BB7B284A36097EE207 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FDEF8A6A93F15FA71C86AA37E138E60D /* Pods-TinySQLite_Tests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		4C7B8245F7285C72EC5FDBCB5D2C7C9E /* TinySQLite-TinySQLite */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F6AEB038833B4D43CD6EA8426D7C482 /* Build configuration list for PBXNativeTarget "TinySQLite-TinySQLite" */;
+			buildPhases = (
+				30AD51AB9236B9B0D37922282E426D16 /* Sources */,
+				B4431DB387822D1972B4FABAACC363AD /* Frameworks */,
+				0CDF30602FC83B784C39699A7BF05027 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TinySQLite-TinySQLite";
+			productName = "TinySQLite-TinySQLite";
+			productReference = 114394898C88386F568730E2CBF527B0 /* TinySQLite.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+		62DDA504BC79483560635FF8FAA9D1C5 /* Pods-TinySQLite_Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 79B89FB2E8B5ED56CBD05589227E2AB3 /* Build configuration list for PBXNativeTarget "Pods-TinySQLite_Tests" */;
+			buildPhases = (
+				85621691CB41B096E702816A9BDE253C /* Sources */,
+				BE61CAFF48F1DA07F02945734955B5EA /* Frameworks */,
+				E07A075DB8DA79BB7B284A36097EE207 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7C82C253D63F06221B8C25056F4BE3A5 /* PBXTargetDependency */,
+			);
+			name = "Pods-TinySQLite_Tests";
+			productName = "Pods-TinySQLite_Tests";
+			productReference = 2643A62D53FFB839A1812D095EC1092A /* Pods_TinySQLite_Tests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		BD16793300DD0CF9463A273D2C7E641E /* TinySQLite */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E1BD57529463667D6889F0E5F7C6E4A0 /* Build configuration list for PBXNativeTarget "TinySQLite" */;
+			buildPhases = (
+				F2A01FCECDAD20C2B65C91C5B7D1968A /* Sources */,
+				2119F6D9AD45C6D698AC832990CF90EB /* Frameworks */,
+				2DAA262E2C9289D6FCA853C3E089AC38 /* Resources */,
+				5CDA179FB6A6E4D15F59504984E524C1 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8730B3C6D228B4BD91A4109004846D01 /* PBXTargetDependency */,
+			);
+			name = TinySQLite;
+			productName = TinySQLite;
+			productReference = 0636674134F4083B0B762B83BB808F53 /* TinySQLite.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = 965FA80E0E1065AF4F1FFBF530AFF9DD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				62DDA504BC79483560635FF8FAA9D1C5 /* Pods-TinySQLite_Tests */,
+				BD16793300DD0CF9463A273D2C7E641E /* TinySQLite */,
+				4C7B8245F7285C72EC5FDBCB5D2C7C9E /* TinySQLite-TinySQLite */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0CDF30602FC83B784C39699A7BF05027 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DAA262E2C9289D6FCA853C3E089AC38 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				746F27F39F30E25EE61F77515BBD1BC0 /* TinySQLite.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		30AD51AB9236B9B0D37922282E426D16 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		85621691CB41B096E702816A9BDE253C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFE08D66328C4FAFD6D412240CE033D5 /* Pods-TinySQLite_Tests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F2A01FCECDAD20C2B65C91C5B7D1968A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7E37AFDEDB3FCA0D91832698F9A87D2 /* ReplaceMe.swift in Sources */,
+				08EB690F99D0541DDDB641ACACD95C17 /* TinySQLite-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7C82C253D63F06221B8C25056F4BE3A5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TinySQLite;
+			target = BD16793300DD0CF9463A273D2C7E641E /* TinySQLite */;
+			targetProxy = 98FF147351551C1AF75889DC7A5CD0CF /* PBXContainerItemProxy */;
+		};
+		8730B3C6D228B4BD91A4109004846D01 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "TinySQLite-TinySQLite";
+			target = 4C7B8245F7285C72EC5FDBCB5D2C7C9E /* TinySQLite-TinySQLite */;
+			targetProxy = 25B3960B7B2E82B62A2DE05A4974E33A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		10DE1947DAC0ED28F6C0A9F9BD75D546 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		21B9E65DCB58B42AD95D579ACF8DEA70 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEF28EB7C41B01F79C52FA392D2AC458 /* TinySQLite.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				PRODUCT_NAME = TinySQLite;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		2FA9DBEB393BFBD226A06A557E6A52D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEF28EB7C41B01F79C52FA392D2AC458 /* TinySQLite.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/TinySQLite/TinySQLite-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/TinySQLite/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/TinySQLite/TinySQLite.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = TinySQLite;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		43912DD327817BCA8D6FE02F2A95603E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AE4F7D5C283F80DF605FF8B71D02EAD0 /* Pods-TinySQLite_Tests.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-TinySQLite_Tests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-TinySQLite_Tests/Pods-TinySQLite_Tests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = Pods_TinySQLite_Tests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		51C7C80D704F7BEB7E116549A734BE0B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEF28EB7C41B01F79C52FA392D2AC458 /* TinySQLite.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/TinySQLite/TinySQLite-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/TinySQLite/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/TinySQLite/TinySQLite.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = TinySQLite;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		552D02D5BA751AC2E8790D2811D496CA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				ONLY_ACTIVE_ARCH = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		75C0445A6A747EADD4D20EF4E93BE3F9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEF28EB7C41B01F79C52FA392D2AC458 /* TinySQLite.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				PRODUCT_NAME = TinySQLite;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		863A07A69E3A95C09BEFF97C95DEE236 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9598189C14E98C892D9049DEDDAF63F8 /* Pods-TinySQLite_Tests.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-TinySQLite_Tests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-TinySQLite_Tests/Pods-TinySQLite_Tests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = Pods_TinySQLite_Tests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				552D02D5BA751AC2E8790D2811D496CA /* Debug */,
+				10DE1947DAC0ED28F6C0A9F9BD75D546 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4F6AEB038833B4D43CD6EA8426D7C482 /* Build configuration list for PBXNativeTarget "TinySQLite-TinySQLite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				75C0445A6A747EADD4D20EF4E93BE3F9 /* Debug */,
+				21B9E65DCB58B42AD95D579ACF8DEA70 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		79B89FB2E8B5ED56CBD05589227E2AB3 /* Build configuration list for PBXNativeTarget "Pods-TinySQLite_Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43912DD327817BCA8D6FE02F2A95603E /* Debug */,
+				863A07A69E3A95C09BEFF97C95DEE236 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E1BD57529463667D6889F0E5F7C6E4A0 /* Build configuration list for PBXNativeTarget "TinySQLite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2FA9DBEB393BFBD226A06A557E6A52D7 /* Debug */,
+				51C7C80D704F7BEB7E116549A734BE0B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}

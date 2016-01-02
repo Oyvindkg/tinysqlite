@@ -23,7 +23,6 @@ Pod::Spec.new do |s|
   s.license          = 'MIT'
   s.author           = { "Øyvind Grimnes" => "oyvindkg@yahoo.com" }
   s.source           = { :git => "https://github.com/Oyvindkg/tinysqlite.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true
@@ -33,7 +32,5 @@ Pod::Spec.new do |s|
     'TinySQLite' => ['Pod/Assets/*.png']
   }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
   s.dependency 'sqlite3'
 end
