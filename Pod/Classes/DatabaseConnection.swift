@@ -21,8 +21,8 @@ extension NSData: Binding {}
 extension NSDate: Binding {}
 extension NSNumber: Binding {}
 
-typealias Bindings = Array<Binding?>
-typealias NamedBindings = Dictionary<String, Binding?>
+public typealias Bindings = Array<Binding?>
+public typealias NamedBindings = Dictionary<String, Binding?>
 
 
 internal let SQLITE_STATIC = unsafeBitCast(0, sqlite3_destructor_type.self)
