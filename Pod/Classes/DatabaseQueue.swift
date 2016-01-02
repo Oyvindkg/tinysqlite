@@ -11,7 +11,7 @@ import Foundation
 // TODO: Allow queues working on different databases at the same time
 private let _queue: dispatch_queue_t = dispatch_queue_create( ("swdb.\(arc4random())"), nil)
 
-class DatabaseQueue {
+public class DatabaseQueue {
     
     private let database:       DatabaseConnection
     
@@ -19,7 +19,7 @@ class DatabaseQueue {
         database = DatabaseConnection(path: path)
     }
     
-    func transaction(block: ((database: DatabaseConnection) throws -> Void)) throws {
+    public func transaction(block: ((database: DatabaseConnection) throws -> Void)) throws {
         try database { (database) -> Void in
             /* If an error occurs, rollback the transaction and rethrow the error */
             do {
@@ -33,7 +33,7 @@ class DatabaseQueue {
         }
     }
     
-    func database(block: ((database: DatabaseConnection) throws -> Void)) throws {
+    public func database(block: ((database: DatabaseConnection) throws -> Void)) throws {
         var thrownError: ErrorType?
         
         /* Run the query on a sequential queue to avoid threading related problems */

@@ -8,7 +8,7 @@
 
 import sqlite3
 
-enum SQLiteDatatype: String {
+public enum SQLiteDatatype: String {
     case Text       = "TEXT"
     case Integer    = "INTEGER"
     case Real       = "REAL"
@@ -17,7 +17,7 @@ enum SQLiteDatatype: String {
     case Null       = "NULL"
 }
 
-class Statement {
+public class Statement {
     private var handle: COpaquePointer
     var query: String
     
@@ -54,7 +54,7 @@ class Statement {
         self.handle = handle
     }
     
-    func step() throws -> Bool {
+    public func step() throws -> Bool {
         let result = sqlite3_step(handle)
         
         try SQLiteResultHandler.verifyResultCode(result, forHandle: handle)
@@ -67,7 +67,7 @@ class Statement {
         return true
     }
     
-    func finalize() throws {
+    public func finalize() throws {
         try SQLiteResultHandler.verifyResultCode(sqlite3_finalize(handle), forHandle: handle)
     }
     
@@ -182,7 +182,7 @@ class Statement {
 //MARK: - Values for indexed columns
 extension Statement {
     
-    func typeForColumn(index: Int32) -> SQLiteDatatype {
+    public func typeForColumn(index: Int32) -> SQLiteDatatype {
         switch sqlite3_column_type(handle, index) {
         case SQLITE_INTEGER:
             return .Integer
@@ -199,11 +199,11 @@ extension Statement {
         }
     }
     
-    func typeForColumn(name: String) -> SQLiteDatatype {
+    public func typeForColumn(name: String) -> SQLiteDatatype {
         return typeForColumn(nameToIndexMapping[name]!)
     }
     
-    func valueForColumn(index: Int32) -> Binding? {
+    public func valueForColumn(index: Int32) -> Binding? {
         let columnType = sqlite3_column_type(handle, index)
         
         switch columnType {
@@ -222,57 +222,57 @@ extension Statement {
         }
     }
     
-    func integerForColumn(index: Int32) -> Int? {
+    public func integerForColumn(index: Int32) -> Int? {
         if typeForColumn(index) == .Null {
             return nil
         }
         return Int(sqlite3_column_int64(handle, index))
     }
     
-    func doubleForColumn(index: Int32) -> Double? {
+    public func doubleForColumn(index: Int32) -> Double? {
         if typeForColumn(index) == .Null {
             return nil
         }
         return sqlite3_column_double(handle, index)
     }
     
-    func floatForColumn(index: Int32) -> Float? {
+    public func floatForColumn(index: Int32) -> Float? {
         if typeForColumn(index) == .Null {
             return nil
         }
         return doubleForColumn(index) != nil ? Float(doubleForColumn(index)!) : nil
     }
     
-    func boolForColumn(index: Int32) -> Bool? {
+    public func boolForColumn(index: Int32) -> Bool? {
         if typeForColumn(index) == .Null {
             return nil
         }
         return integerForColumn(index) != nil ? Bool(integerForColumn(index)!) : nil
     }
     
-    func dataForColumn(index: Int32) -> NSData? {
+    public func dataForColumn(index: Int32) -> NSData? {
         if typeForColumn(index) == .Null {
             return nil
         }
         return NSData(bytes: sqlite3_column_blob(handle, index), length: Int(sqlite3_column_bytes(handle, index)))
     }
     
-    func dateForColumn(index: Int32) -> NSDate? {
+    public func dateForColumn(index: Int32) -> NSDate? {
         if typeForColumn(index) == .Null {
             return nil
         }
         return doubleForColumn(index) != nil ? NSDate(timeIntervalSince1970: doubleForColumn(index)!) : nil
     }
     
-    func stringForColumn(index: Int32) -> String? {
+    public func stringForColumn(index: Int32) -> String? {
         return nsstringForColumn(index) as? String
     }
     
-    func nsstringForColumn(index: Int32) -> NSString? {
+    public func nsstringForColumn(index: Int32) -> NSString? {
         return NSString(bytes: sqlite3_column_text(handle, index), length: Int(sqlite3_column_bytes(handle, index)), encoding: NSUTF8StringEncoding)
     }
     
-    func numberForColumn(index: Int32) -> NSNumber? {
+    public func numberForColumn(index: Int32) -> NSNumber? {
         switch sqlite3_column_type(handle, index) {
         case SQLITE_INTEGER:
             if let integerValue = integerForColumn(index) {
@@ -294,7 +294,7 @@ extension Statement {
         }
     }
     
-    var dictionary: NamedBindings {
+    public var dictionary: NamedBindings {
         var dictionary: NamedBindings = [:]
         
         for i in 0..<sqlite3_column_count(handle) {
@@ -307,43 +307,43 @@ extension Statement {
 
 //MARK: - Values for named columns
 extension Statement {
-    func valueForColumn(name: String) -> Binding? {
+    public func valueForColumn(name: String) -> Binding? {
         return valueForColumn(nameToIndexMapping[name]!)
     }
     
-    func integerForColumn(name: String) -> Int? {
+    public func integerForColumn(name: String) -> Int? {
         return integerForColumn(nameToIndexMapping[name]!)
     }
     
-    func doubleForColumn(name: String) -> Double? {
+    public func doubleForColumn(name: String) -> Double? {
         return doubleForColumn(nameToIndexMapping[name]!)
     }
     
-    func floatForColumn(name: String) -> Float? {
+    public func floatForColumn(name: String) -> Float? {
         return floatForColumn(nameToIndexMapping[name]!)
     }
     
-    func boolForColumn(name: String) -> Bool? {
+    public func boolForColumn(name: String) -> Bool? {
         return boolForColumn(nameToIndexMapping[name]!)
     }
     
-    func dataForColumn(name: String) -> NSData? {
+    public func dataForColumn(name: String) -> NSData? {
         return dataForColumn(nameToIndexMapping[name]!)
     }
     
-    func dateForColumn(name: String) -> NSDate? {
+    public func dateForColumn(name: String) -> NSDate? {
         return dateForColumn(nameToIndexMapping[name]!)
     }
     
-    func stringForColumn(name: String) -> String? {
+    public func stringForColumn(name: String) -> String? {
         return stringForColumn(nameToIndexMapping[name]!)
     }
     
-    func nsstringForColumn(name: String) -> NSString? {
+    public func nsstringForColumn(name: String) -> NSString? {
         return nsstringForColumn(nameToIndexMapping[name]!)
     }
     
-    func numberForColumn(name: String) -> NSNumber? {
+    public func numberForColumn(name: String) -> NSNumber? {
         return numberForColumn(nameToIndexMapping[name]!)
     }
 }
@@ -351,7 +351,7 @@ extension Statement {
 //MARK: - Generator and sequence type
 extension Statement: GeneratorType, SequenceType {
     
-    func next() -> Statement? {
+    public func next() -> Statement? {
         do {
             let result = try step()
             return result ? self : nil
@@ -360,7 +360,7 @@ extension Statement: GeneratorType, SequenceType {
         }
     }
     
-    func generate() -> Statement {
+    public func generate() -> Statement {
         return self
     }
     

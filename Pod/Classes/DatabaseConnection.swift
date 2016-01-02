@@ -29,7 +29,7 @@ internal let SQLITE_STATIC = unsafeBitCast(0, sqlite3_destructor_type.self)
 internal let SQLITE_TRANSIENT = unsafeBitCast(-1, sqlite3_destructor_type.self)
 
 
-struct SQLiteResultHandler {
+public struct SQLiteResultHandler {
     static let successCodes: Set<Int32> = [SQLITE_OK, SQLITE_DONE, SQLITE_ROW]
     
     static func isSuccess(resultCode: Int32) -> Bool {
@@ -68,14 +68,14 @@ struct SQLiteResultHandler {
     }
 }
 
-enum DatabaseError: ErrorType {
+public enum DatabaseError: ErrorType {
     case SQLite(message: String)
     case Binding(message: String)
 }
 
 
 
-class DatabaseConnection {
+public class DatabaseConnection {
     
     private var handle: COpaquePointer = nil
     private let path: String
@@ -86,27 +86,27 @@ class DatabaseConnection {
         self.path = path
     }
     
-    func open() throws {
+    public func open() throws {
         try SQLiteResultHandler.verifyResultCode(sqlite3_open(path, &handle), forHandle: handle)
         isOpen = true
     }
     
-    func close() throws {
+    public func close() throws {
         try SQLiteResultHandler.verifyResultCode(sqlite3_close(handle), forHandle: handle)
         handle = nil
         isOpen = false
     }
     
     
-    func executeUpdate(query: String, bindings: Bindings = []) throws {
+    public func executeUpdate(query: String, bindings: Bindings = []) throws {
         try executeQuery(query, bindings: bindings).step()
     }
     
-    func executeUpdate(query: String, namedBindings: NamedBindings) throws {
+    public func executeUpdate(query: String, namedBindings: NamedBindings) throws {
         try executeQuery(query, namedBindings: namedBindings).step()
     }
     
-    func executeQuery(query: String, bindings: Bindings = []) throws -> Statement {
+    public func executeQuery(query: String, bindings: Bindings = []) throws -> Statement {
         print(query)
         let statement: Statement = Statement(query)
         try statement.prepareForDatabase(handle)
@@ -114,7 +114,7 @@ class DatabaseConnection {
         return statement
     }
     
-    func executeQuery(query: String, namedBindings: NamedBindings) throws -> Statement {
+    public func executeQuery(query: String, namedBindings: NamedBindings) throws -> Statement {
         let statement: Statement = Statement(query)
         try statement.prepareForDatabase(handle)
         try statement.bind(namedBindings)
