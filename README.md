@@ -5,9 +5,9 @@
 [![License](https://img.shields.io/cocoapods/l/TinySQLite.svg?style=flat)](http://cocoapods.org/pods/TinySQLite)
 [![Platform](https://img.shields.io/cocoapods/p/TinySQLite.svg?style=flat)](http://cocoapods.org/pods/TinySQLite)
 
-A small SQLite wrapper written in swift
+A lightweight SQLite wrapper written in Swift
 
-###Featres
+###Features
 - [x] Lightweight
 - [x] Object oriented
 - [x] Automatic parameter binding
@@ -46,7 +46,7 @@ To use automatic named binding, replace the values in the statement by ':\<name>
 
 ```Swift
 let query = "INSERT INTO YourTable (column, otherColumn) VALUES (:column, :otherColumn)"
-let values = ["someColumn": 1, "otherColumn": "A value"]
+let values = ["column": 1, "otherColumn": "A value"]
 ```
 
 ### Executing updates
