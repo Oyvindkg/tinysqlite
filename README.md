@@ -5,11 +5,82 @@
 [![License](https://img.shields.io/cocoapods/l/TinySQLite.svg?style=flat)](http://cocoapods.org/pods/TinySQLite)
 [![Platform](https://img.shields.io/cocoapods/p/TinySQLite.svg?style=flat)](http://cocoapods.org/pods/TinySQLite)
 
+A small SQLite wrapper written in swift
+
+###Featres
+- [x] Lightweight
+- [x] Object oriented
+- [x] Automatic parameter binding
+- [x] Named parameter binding
+- [x] Thread safe
+
+####Valid datatypes
+- [x] String
+- [x] Bool
+- [x] Int
+- [x] Float
+- [x] Double
+- [x] NSString
+- [x] NSData
+- [x] NSDate
+- [x] NSNumber
+- [ ] All Swift types
+
 ## Usage
+### Creating the database object
+Provide the path to an existing or new database
+```Swift
+let databaseQueue = DatabaseQueue(path: path)
+```
+### Creating queries
+All valid SQLite queries are accepted by TinySQLite
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+To use automatic binding, replace the values in the statement by '?', and provide the values in an array
 
-## Requirements
+```Swift
+let query = "INSERT INTO YourTable (column, otherColumn) VALUES (?, ?)"
+let values = [1, "A value"]
+```
+
+To use automatic named binding, replace the values in the statement by ':\<name>', and provide the values in a dictionary
+
+```Swift
+let query = "INSERT INTO YourTable (column, otherColumn) VALUES (:column, :otherColumn)"
+let values = ["someColumn": 1, "otherColumn": "A value"]
+```
+
+### Executing updates
+Execute an update in the database
+```Swift
+try databaseQueue.database { (database) in
+    try database.executeUpdate(query, bindings: values)
+    try database.executeUpdate(query, namedBindings: values)
+}
+```
+
+
+### Executing queries
+Execute a query to the database.
+```Swift
+try databaseQueue.database { (database) in
+    for row in try database.executeQuery(query) {
+        row.integerForColumn(2) // Returns an integer from the second column in the row
+        row.dateForColumn("deadline") // Returns a date from the column called 'deadline'
+        row.dictionary // Returns a dictionary representing the row
+    }
+}
+```
+
+### Transactions
+To improve performance, and prevent partial updates when executing multiple queries, you can use `DatabaseQueue`'s `transaction` method.
+If an error is thrown in the block, all changes are rolled back. 
+```Swift
+try databaseQueue.transaction { (database) in
+    try database.executeUpdate(query)
+    try database.executeUpdate(query)
+    try database.executeUpdate(query)
+}
+```
 
 ## Installation
 
