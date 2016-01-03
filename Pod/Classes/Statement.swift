@@ -1,9 +1,8 @@
 //
 //  Statement.swift
-//  Ladestasjoner
+//  TinySQLite
 //
 //  Created by Øyvind Grimnes on 25/12/15.
-//  Copyright © 2015 Øyvind Grimnes. All rights reserved.
 //
 
 import sqlite3
@@ -25,7 +24,7 @@ public class Statement {
         return NSNumber(int: sqlite3_stmt_busy(handle)).boolValue
     }
     
-//    TODO: Fix Mappings
+    //    TODO: Fix Mappings
     lazy var indexToNameMapping: [Int32: String] = {
         var mapping: [Int32: String] = [:]
         
@@ -39,7 +38,7 @@ public class Statement {
     
     lazy var nameToIndexMapping: [String: Int32] = {
         var mapping: [String: Int32] = [:]
-
+        
         for index in 0..<sqlite3_column_count(self.handle) {
             let name =  NSString(UTF8String: sqlite3_column_name(self.handle, index)) as! String
             mapping[name] = index
@@ -75,9 +74,19 @@ public class Statement {
         try SQLiteResultHandler.verifyResultCode(sqlite3_prepare_v2(databaseHandle, query, -1, &handle, nil), forHandle: handle)
     }
     
-//    TODO: Merge bind functions
+    //    TODO: Merge bind functions
     internal func bind(namedBindings: NamedBindings) throws {
-        let bindings: Bindings = namedBindings.keys.sort { nameToIndexMapping[$0]! > nameToIndexMapping[$1]! }.map {namedBindings[$0]!}
+        var parameterNameToIndexMapping: [String: Int32] = [:]
+        
+        for (name, _) in namedBindings {
+            let index = sqlite3_bind_parameter_index(handle, ":\(name)")
+            parameterNameToIndexMapping[name] = index
+        }
+        
+        let bindings: Bindings = namedBindings.keys.sort {
+            parameterNameToIndexMapping[$0]! > parameterNameToIndexMapping[$1]!
+            }.map {namedBindings[$0]!}
+        
         try bind(bindings)
     }
     
@@ -109,10 +118,10 @@ public class Statement {
             
         case let integerValue as Int:
             result = sqlite3_bind_int64(handle, index, Int64(integerValue))
-
+            
         case let boolValue as Bool:
             result = sqlite3_bind_int64(handle, index, boolValue ? 1 : 0)
-        
+            
         case let floatValue as Float:
             result = sqlite3_bind_double(handle, index, Double(floatValue))
             

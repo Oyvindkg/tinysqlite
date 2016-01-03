@@ -1,9 +1,8 @@
 //
 //  DatabaseQueue.swift
-//  Ladestasjoner
+//  TinySQLite
 //
 //  Created by Øyvind Grimnes on 28/12/15.
-//  Copyright © 2015 Øyvind Grimnes. All rights reserved.
 //
 
 import Foundation

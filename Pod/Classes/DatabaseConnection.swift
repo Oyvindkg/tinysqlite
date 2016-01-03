@@ -1,9 +1,8 @@
 //
 //  DatabaseConnection.swift
-//  Ladestasjoner
+//  TinySQLite
 //
 //  Created by Øyvind Grimnes on 25/12/15.
-//  Copyright © 2015 Øyvind Grimnes. All rights reserved.
 //
 
 import sqlite3
@@ -107,7 +106,6 @@ public class DatabaseConnection {
     }
     
     public func executeQuery(query: String, bindings: Bindings = []) throws -> Statement {
-        print(query)
         let statement: Statement = Statement(query)
         try statement.prepareForDatabase(handle)
         try statement.bind(bindings)
@@ -119,7 +117,7 @@ public class DatabaseConnection {
         try statement.prepareForDatabase(handle)
         try statement.bind(namedBindings)
         return statement
-    }    
+    }
 }
 
 // MARK: - Transactions
