@@ -1,5 +1,9 @@
 PODS:
-  - TinySQLite (0.1.0)
+  - sqlite3 (3.9.2.0):
+    - sqlite3/common (= 3.9.2.0)
+  - sqlite3/common (3.9.2.0)
+  - TinySQLite (0.1.0):
+    - sqlite3
 
 DEPENDENCIES:
   - TinySQLite (from `../`)
@@ -9,6 +13,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  TinySQLite: 6862d1a4087425c7fd16f947acbae7ecd52aed2c
+  sqlite3: 5e6238a0a38f7356c0b672290be9ea95e8ceee9f
+  TinySQLite: bb4bd5a7c7321974e95a26d7bbcc24c65dd1f55c
 
 COCOAPODS: 0.39.0

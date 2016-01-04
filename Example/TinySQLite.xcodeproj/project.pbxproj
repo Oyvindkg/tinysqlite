@@ -7,13 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3908AADB1C39D99E00015F7D /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 3908AAD61C39D99E00015F7D /* .gitkeep */; };
+		3908AADC1C39D99E00015F7D /* DatabaseConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3908AAD71C39D99E00015F7D /* DatabaseConnection.swift */; };
+		3908AADD1C39D99E00015F7D /* DatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3908AAD81C39D99E00015F7D /* DatabaseQueue.swift */; };
+		3908AADF1C39D99E00015F7D /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3908AADA1C39D99E00015F7D /* Statement.swift */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		E5170DCAFCFFA808444E25F6 /* Pods_TinySQLite_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 302D7C69FC84B685E1BFEC8C /* Pods_TinySQLite_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		302D7C69FC84B685E1BFEC8C /* Pods_TinySQLite_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinySQLite_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		607FACE51AFB9204008FA782 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = Tests.xctest; path = TinySQLite_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3908AAD61C39D99E00015F7D /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		3908AAD71C39D99E00015F7D /* DatabaseConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseConnection.swift; sourceTree = "<group>"; };
+		3908AAD81C39D99E00015F7D /* DatabaseQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseQueue.swift; sourceTree = "<group>"; };
+		3908AADA1C39D99E00015F7D /* Statement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Statement.swift; sourceTree = "<group>"; };
+		607FACE51AFB9204008FA782 /* TinySQLite_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TinySQLite_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		9F30EBCA0B262BABF5F37202 /* TinySQLite.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = TinySQLite.podspec; path = ../TinySQLite.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -44,6 +52,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		3908AAD51C39D99E00015F7D /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				3908AAD61C39D99E00015F7D /* .gitkeep */,
+				3908AAD71C39D99E00015F7D /* DatabaseConnection.swift */,
+				3908AAD81C39D99E00015F7D /* DatabaseQueue.swift */,
+				3908AADA1C39D99E00015F7D /* Statement.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		44F34E58B07945C43D64618C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -55,6 +74,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				3908AAD51C39D99E00015F7D /* Classes */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
@@ -66,7 +86,7 @@
 		607FACD11AFB9204008FA782 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				607FACE51AFB9204008FA782 /* Tests.xctest */,
+				607FACE51AFB9204008FA782 /* TinySQLite_Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -118,7 +138,7 @@
 			);
 			name = TinySQLite_Tests;
 			productName = Tests;
-			productReference = 607FACE51AFB9204008FA782 /* Tests.xctest */;
+			productReference = 607FACE51AFB9204008FA782 /* TinySQLite_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -160,6 +180,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3908AADB1C39D99E00015F7D /* .gitkeep in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,7 +239,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3908AADC1C39D99E00015F7D /* DatabaseConnection.swift in Sources */,
+				3908AADD1C39D99E00015F7D /* DatabaseQueue.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+				3908AADF1C39D99E00015F7D /* Statement.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
