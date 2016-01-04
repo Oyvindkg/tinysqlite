@@ -13,18 +13,19 @@ A lightweight SQLite wrapper written in Swift
 - [x] Automatic parameter binding
 - [x] Named parameter binding
 - [x] Thread safe
+- [x] Supports all native Swift types
 
 ####Valid datatypes
 - [x] String
+- [x] Character
 - [x] Bool
-- [x] Int
+- [x] All integer types (signed and unsigned)
 - [x] Float
 - [x] Double
 - [x] NSString
 - [x] NSData
-- [x] NSDate
+- [x] NSDate (represented as UNIX timestamps)
 - [x] NSNumber
-- [ ] All Swift types
 
 ## Usage
 ### Creating the database object
