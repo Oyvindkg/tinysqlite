@@ -418,18 +418,12 @@ extension Statement {
     public func numberForColumn(index: Int32) -> NSNumber? {
         switch sqlite3_column_type(handle, index) {
         case SQLITE_INTEGER:
-            if let integerValue = integerForColumn(index) {
-                return integerValue as NSNumber
-            }
-            return nil
+            return integerForColumn(index) as NSNumber?
+        case SQLITE_FLOAT:
+            return doubleForColumn(index) as NSNumber?
         case SQLITE_TEXT:
             if let stringValue = stringForColumn(index) {
                 return Int(stringValue)
-            }
-            return nil
-        case SQLITE_FLOAT:
-            if let doubleValue = doubleForColumn(index) {
-                return doubleValue as NSNumber
             }
             return nil
         default:

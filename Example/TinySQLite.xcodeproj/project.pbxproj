@@ -7,20 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3908AADB1C39D99E00015F7D /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 3908AAD61C39D99E00015F7D /* .gitkeep */; };
-		3908AADC1C39D99E00015F7D /* DatabaseConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3908AAD71C39D99E00015F7D /* DatabaseConnection.swift */; };
-		3908AADD1C39D99E00015F7D /* DatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3908AAD81C39D99E00015F7D /* DatabaseQueue.swift */; };
-		3908AADF1C39D99E00015F7D /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3908AADA1C39D99E00015F7D /* Statement.swift */; };
+		399C97381C3B2B8E00F54AF1 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 399C97331C3B2B8E00F54AF1 /* .gitkeep */; };
+		399C97391C3B2B8E00F54AF1 /* DatabaseConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399C97341C3B2B8E00F54AF1 /* DatabaseConnection.swift */; };
+		399C973A1C3B2B8E00F54AF1 /* DatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399C97351C3B2B8E00F54AF1 /* DatabaseQueue.swift */; };
+		399C973B1C3B2B8E00F54AF1 /* ReplaceMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399C97361C3B2B8E00F54AF1 /* ReplaceMe.swift */; };
+		399C973C1C3B2B8E00F54AF1 /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399C97371C3B2B8E00F54AF1 /* Statement.swift */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		E5170DCAFCFFA808444E25F6 /* Pods_TinySQLite_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 302D7C69FC84B685E1BFEC8C /* Pods_TinySQLite_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		302D7C69FC84B685E1BFEC8C /* Pods_TinySQLite_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinySQLite_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3908AAD61C39D99E00015F7D /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		3908AAD71C39D99E00015F7D /* DatabaseConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseConnection.swift; sourceTree = "<group>"; };
-		3908AAD81C39D99E00015F7D /* DatabaseQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseQueue.swift; sourceTree = "<group>"; };
-		3908AADA1C39D99E00015F7D /* Statement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Statement.swift; sourceTree = "<group>"; };
+		399C97331C3B2B8E00F54AF1 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		399C97341C3B2B8E00F54AF1 /* DatabaseConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseConnection.swift; sourceTree = "<group>"; };
+		399C97351C3B2B8E00F54AF1 /* DatabaseQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseQueue.swift; sourceTree = "<group>"; };
+		399C97361C3B2B8E00F54AF1 /* ReplaceMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplaceMe.swift; sourceTree = "<group>"; };
+		399C97371C3B2B8E00F54AF1 /* Statement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Statement.swift; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* TinySQLite_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TinySQLite_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
@@ -52,15 +54,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		3908AAD51C39D99E00015F7D /* Classes */ = {
+		399C97321C3B2B8E00F54AF1 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				3908AAD61C39D99E00015F7D /* .gitkeep */,
-				3908AAD71C39D99E00015F7D /* DatabaseConnection.swift */,
-				3908AAD81C39D99E00015F7D /* DatabaseQueue.swift */,
-				3908AADA1C39D99E00015F7D /* Statement.swift */,
+				399C97331C3B2B8E00F54AF1 /* .gitkeep */,
+				399C97341C3B2B8E00F54AF1 /* DatabaseConnection.swift */,
+				399C97351C3B2B8E00F54AF1 /* DatabaseQueue.swift */,
+				399C97361C3B2B8E00F54AF1 /* ReplaceMe.swift */,
+				399C97371C3B2B8E00F54AF1 /* Statement.swift */,
 			);
-			path = Classes;
+			name = Classes;
+			path = ../Pod/Classes;
 			sourceTree = "<group>";
 		};
 		44F34E58B07945C43D64618C /* Frameworks */ = {
@@ -74,7 +78,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
-				3908AAD51C39D99E00015F7D /* Classes */,
+				399C97321C3B2B8E00F54AF1 /* Classes */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
@@ -180,7 +184,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3908AADB1C39D99E00015F7D /* .gitkeep in Resources */,
+				399C97381C3B2B8E00F54AF1 /* .gitkeep in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,10 +243,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3908AADC1C39D99E00015F7D /* DatabaseConnection.swift in Sources */,
-				3908AADD1C39D99E00015F7D /* DatabaseQueue.swift in Sources */,
+				399C973B1C3B2B8E00F54AF1 /* ReplaceMe.swift in Sources */,
+				399C97391C3B2B8E00F54AF1 /* DatabaseConnection.swift in Sources */,
+				399C973A1C3B2B8E00F54AF1 /* DatabaseQueue.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
-				3908AADF1C39D99E00015F7D /* Statement.swift in Sources */,
+				399C973C1C3B2B8E00F54AF1 /* Statement.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
