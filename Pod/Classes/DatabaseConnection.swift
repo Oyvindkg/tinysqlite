@@ -7,21 +7,36 @@
 
 import sqlite3
 
-/** Valid SQLite types are marked using the 'Binding' protocol */
-public protocol Binding {}
+/** Valid SQLite types are marked using the 'SQLiteValue' protocol */
+public protocol SQLiteValue {}
 
-extension String: Binding {}
-extension Bool: Binding {}
-extension Int: Binding {}
-extension Float: Binding {}
-extension Double: Binding {}
-extension NSString: Binding {}
-extension NSData: Binding {}
-extension NSDate: Binding {}
-extension NSNumber: Binding {}
+extension String: SQLiteValue {}
+extension NSString: SQLiteValue {}
+extension Character: SQLiteValue {}
 
-public typealias Bindings = Array<Binding?>
-public typealias NamedBindings = Dictionary<String, Binding?>
+extension Bool: SQLiteValue {}
+
+extension Int: SQLiteValue {}
+extension Int8: SQLiteValue {}
+extension Int16: SQLiteValue {}
+extension Int32: SQLiteValue {}
+extension Int64: SQLiteValue {}
+extension UInt: SQLiteValue {}
+extension UInt8: SQLiteValue {}
+extension UInt16: SQLiteValue {}
+extension UInt32: SQLiteValue {}
+extension UInt64: SQLiteValue {}
+
+extension Float: SQLiteValue {}
+extension Float80: SQLiteValue {}
+extension Double: SQLiteValue {}
+
+extension NSData: SQLiteValue {}
+extension NSDate: SQLiteValue {}
+extension NSNumber: SQLiteValue {}
+
+public typealias SQLiteValues = Array<SQLiteValue?>
+public typealias NamedSQLiteValues = Dictionary<String, SQLiteValue?>
 
 
 internal let SQLITE_STATIC = unsafeBitCast(0, sqlite3_destructor_type.self)
@@ -73,14 +88,16 @@ public enum DatabaseError: ErrorType {
 }
 
 
-
+/** Responsible for opening and closing database connections, executing queries, and managing transactions */
 public class DatabaseConnection {
     
     private var handle: COpaquePointer = nil
     private let path: String
     
+//    MARK: - Public properties
     public var isOpen: Bool = false
     
+//    MARK: - Public methods
     public init(path: String) {
         self.path = path
     }
@@ -96,23 +113,22 @@ public class DatabaseConnection {
         isOpen = false
     }
     
-    
-    public func executeUpdate(query: String, bindings: Bindings = []) throws {
+    public func executeUpdate(query: String, bindings: SQLiteValues = []) throws {
         try executeQuery(query, bindings: bindings).step()
     }
     
-    public func executeUpdate(query: String, namedBindings: NamedBindings) throws {
+    public func executeUpdate(query: String, namedBindings: NamedSQLiteValues) throws {
         try executeQuery(query, namedBindings: namedBindings).step()
     }
     
-    public func executeQuery(query: String, bindings: Bindings = []) throws -> Statement {
+    public func executeQuery(query: String, bindings: SQLiteValues = []) throws -> Statement {
         let statement: Statement = Statement(query)
         try statement.prepareForDatabase(handle)
         try statement.bind(bindings)
         return statement
     }
     
-    public func executeQuery(query: String, namedBindings: NamedBindings) throws -> Statement {
+    public func executeQuery(query: String, namedBindings: NamedSQLiteValues) throws -> Statement {
         let statement: Statement = Statement(query)
         try statement.prepareForDatabase(handle)
         try statement.bind(namedBindings)
@@ -135,6 +151,24 @@ extension DatabaseConnection {
     }
 }
 
+// MARK: - General 
+extension DatabaseConnection {
+    
+    /** Number of rows affected by INSERT, UPDATE, or DELETE since the database was opened */
+    public func changes() -> Int {
+        return Int(sqlite3_changes(handle))
+    }
+    
+    /** Total number of rows affected by INSERT, UPDATE, or DELETE since the database was opened */
+    public func totalChanges() -> Int {
+        return Int(sqlite3_total_changes(handle))
+    }
+    
+    /** Interrupts any pending database operations */
+    public func interrupt() {
+        sqlite3_interrupt(handle)
+    }
+}
 
 // MARK: - Helpers
 extension DatabaseConnection {
