@@ -1,15 +1,14 @@
 {
   "name": "TinySQLite",
   "version": "0.1.0",
-  "summary": "A short description of TinySQLite.",
-  "description": "",
-  "homepage": "https://github.com/<GITHUB_USERNAME>/TinySQLite",
+  "summary": "A lightweight wrapper for SQLite written in Swift",
+  "homepage": "https://github.com/Oyvindkg/tinysqlite",
   "license": "MIT",
   "authors": {
     "Øyvind Grimnes": "oyvindkg@yahoo.com"
   },
   "source": {
-    "git": "https://github.com/<GITHUB_USERNAME>/TinySQLite.git",
+    "git": "https://github.com/Oyvindkg/tinysqlite.git",
     "tag": "0.1.0"
   },
   "platforms": {
@@ -20,6 +19,11 @@
   "resource_bundles": {
     "TinySQLite": [
       "Pod/Assets/*.png"
+    ]
+  },
+  "dependencies": {
+    "sqlite3": [
+
     ]
   }
 }
