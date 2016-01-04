@@ -1,11 +1,11 @@
-# TinySQLite
-
 [![CI Status](http://img.shields.io/travis/Øyvind Grimnes/TinySQLite.svg?style=flat)](https://travis-ci.org/Øyvind Grimnes/TinySQLite)
 [![Version](https://img.shields.io/cocoapods/v/TinySQLite.svg?style=flat)](http://cocoapods.org/pods/TinySQLite)
 [![License](https://img.shields.io/cocoapods/l/TinySQLite.svg?style=flat)](http://cocoapods.org/pods/TinySQLite)
 [![Platform](https://img.shields.io/cocoapods/p/TinySQLite.svg?style=flat)](http://cocoapods.org/pods/TinySQLite)
 
-A small SQLite wrapper written in swift
+![alt text] (http://i.imgur.com/KvtukKk.png "Logo")
+
+A lightweight SQLite wrapper written in Swift
 
 ###Features
 - [x] Lightweight
@@ -47,7 +47,7 @@ To use automatic named binding, replace the values in the statement by ':\<name>
 
 ```Swift
 let query = "INSERT INTO YourTable (column, otherColumn) VALUES (:column, :otherColumn)"
-let values = ["someColumn": 1, "otherColumn": "A value"]
+let values = ["column": 1, "otherColumn": "A value"]
 ```
 
 ### Executing updates
