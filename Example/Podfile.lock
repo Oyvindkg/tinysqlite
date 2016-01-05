@@ -2,7 +2,7 @@ PODS:
   - sqlite3 (3.9.2.0):
     - sqlite3/common (= 3.9.2.0)
   - sqlite3/common (3.9.2.0)
-  - TinySQLite (0.1.0):
+  - TinySQLite (0.2.0):
     - sqlite3
 
 DEPENDENCIES:
@@ -14,6 +14,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   sqlite3: 5e6238a0a38f7356c0b672290be9ea95e8ceee9f
-  TinySQLite: bb4bd5a7c7321974e95a26d7bbcc24c65dd1f55c
+  TinySQLite: ad454735a5b09c2f4263d98a15d7d91afe4346ed
 
 COCOAPODS: 0.39.0

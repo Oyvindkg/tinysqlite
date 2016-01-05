@@ -7,6 +7,8 @@
 
 import sqlite3
 
+// MARK: - Setup SQLiteValue protocol for all supported  datatypes
+
 /** Valid SQLite types are marked using the 'SQLiteValue' protocol */
 public protocol SQLiteValue {}
 
@@ -38,9 +40,7 @@ extension NSNumber: SQLiteValue {}
 public typealias SQLiteValues = Array<SQLiteValue?>
 public typealias NamedSQLiteValues = Dictionary<String, SQLiteValue?>
 
-
-internal let SQLITE_STATIC = unsafeBitCast(0, sqlite3_destructor_type.self)
-internal let SQLITE_TRANSIENT = unsafeBitCast(-1, sqlite3_destructor_type.self)
+// MARK: -
 
 
 public struct SQLiteResultHandler {
@@ -54,7 +54,7 @@ public struct SQLiteResultHandler {
         guard isSuccess(resultCode) else {
             let errorMessage = NSString(UTF8String: sqlite3_errmsg(handle)) as? String
             
-            throw DatabaseError.SQLite(message: "\(errorMessage ?? "ERROR"): " + SQLiteResultHandler.resultMessageForResultCode(resultCode) + " (\(resultCode))")
+            throw TinySQLiteError.SQLiteError(message: "\(errorMessage ?? "ERROR"): " + SQLiteResultHandler.resultMessageForResultCode(resultCode) + " (\(resultCode))")
         }
     }
     
@@ -82,10 +82,16 @@ public struct SQLiteResultHandler {
     }
 }
 
-public enum DatabaseError: ErrorType {
-    case SQLite(message: String)
-    case Binding(message: String)
+// MARK: -
+
+public enum TinySQLiteError: ErrorType {
+    case SQLiteError(message: String)
+    case UnknownBindingType(message: String)
+    case WrongNumberOfBindings(message: String)
 }
+
+internal let SQLITE_STATIC = unsafeBitCast(0, sqlite3_destructor_type.self)
+internal let SQLITE_TRANSIENT = unsafeBitCast(-1, sqlite3_destructor_type.self)
 
 
 /** Responsible for opening and closing database connections, executing queries, and managing transactions */
@@ -94,10 +100,8 @@ public class DatabaseConnection {
     private var handle: COpaquePointer = nil
     private let path: String
     
-//    MARK: - Public properties
     public var isOpen: Bool = false
     
-//    MARK: - Public methods
     public init(path: String) {
         self.path = path
     }
@@ -113,25 +117,25 @@ public class DatabaseConnection {
         isOpen = false
     }
     
-    public func executeUpdate(query: String, bindings: SQLiteValues = []) throws {
-        try executeQuery(query, bindings: bindings).step()
+    public func executeUpdate(query: String, values: SQLiteValues = []) throws {
+        try executeQuery(query, values: values).step()
     }
     
-    public func executeUpdate(query: String, namedBindings: NamedSQLiteValues) throws {
-        try executeQuery(query, namedBindings: namedBindings).step()
+    public func executeUpdate(query: String, namedValues: NamedSQLiteValues) throws {
+        try executeQuery(query, namedValues: namedValues).step()
     }
     
-    public func executeQuery(query: String, bindings: SQLiteValues = []) throws -> Statement {
+    public func executeQuery(query: String, values: SQLiteValues = []) throws -> Statement {
         let statement: Statement = Statement(query)
         try statement.prepareForDatabase(handle)
-        try statement.bind(bindings)
+        try statement.bind(values)
         return statement
     }
     
-    public func executeQuery(query: String, namedBindings: NamedSQLiteValues) throws -> Statement {
+    public func executeQuery(query: String, namedValues: NamedSQLiteValues) throws -> Statement {
         let statement: Statement = Statement(query)
         try statement.prepareForDatabase(handle)
-        try statement.bind(namedBindings)
+        try statement.bind(namedValues)
         return statement
     }
 }
@@ -175,7 +179,7 @@ extension DatabaseConnection {
     public func containsTable(tableName: String) throws -> Bool {
         let query = "SELECT name FROM sqlite_master WHERE type='table' AND name=?"
         
-        let statement = try executeQuery(query, bindings: [tableName])
+        let statement = try executeQuery(query, values: [tableName])
         
         defer {
             if statement.isBusy {

@@ -16,8 +16,6 @@ public enum SQLiteDatatype: String {
     case Null       = "NULL"
 }
 
-
-
 public class Statement {
     private var handle: COpaquePointer
     var query: String
@@ -82,32 +80,32 @@ public class Statement {
     }
     
     //    TODO: Merge bind functions
-    internal func bind(namedBindings: NamedSQLiteValues) throws {
+    internal func bind(namedValues: NamedSQLiteValues) throws {
         var parameterNameToIndexMapping: [String: Int32] = [:]
         
-        for (name, _) in namedBindings {
+        for (name, _) in namedValues {
             let index = sqlite3_bind_parameter_index(handle, ":\(name)")
             parameterNameToIndexMapping[name] = index
         }
         
-        let bindings: SQLiteValues = namedBindings.keys.sort {
+        let values: SQLiteValues = namedValues.keys.sort {
             parameterNameToIndexMapping[$0]! > parameterNameToIndexMapping[$1]!
-            }.map {namedBindings[$0]!}
+            }.map {namedValues[$0]!}
         
-        try bind(bindings)
+        try bind(values)
     }
     
-    internal func bind(bindings: SQLiteValues) throws {
+    internal func bind(values: SQLiteValues) throws {
         let totalBindCount = sqlite3_bind_parameter_count(handle)
         
         var bindCount: Int32 = 0
-        for (index, value) in bindings.enumerate() {
+        for (index, value) in values.enumerate() {
             try bindValue(value, forIndex: Int32(index+1))
             ++bindCount
         }
         
         if bindCount != totalBindCount {
-            throw DatabaseError.Binding(message: "Wrong number of bindings (was '\(bindCount)', should have been '\(totalBindCount)')")
+            throw TinySQLiteError.WrongNumberOfBindings(message: "Wrong number of bindings (was '\(bindCount)', should have been '\(totalBindCount)')")
         }
     }
     
@@ -126,8 +124,8 @@ public class Statement {
             result = sqlite3_bind_double(handle, index, dateValue.timeIntervalSince1970)
             
         case let dataValue as NSData:
-            guard dataValue.length > 0 else {
-                throw DatabaseError.Binding(message: "Failed to bind NSData value for index \(index). NSData with length = 0 is interperated as NULL in SQLite")
+            if dataValue.length == 0 {
+                print("[ WARNING: Data values with zero bytes are treated as NULL by SQLite ]")
             }
             result = sqlite3_bind_blob(handle, index, dataValue.bytes, -1, SQLITE_TRANSIENT)
             
@@ -188,7 +186,7 @@ public class Statement {
         
         let typeString = String.fromCString(numberValue.objCType)
         if typeString == nil || typeString!.isEmpty {
-            throw DatabaseError.Binding(message: "The value wrapped in NSNumber was not recognized. Type string was nil or empty")
+            throw TinySQLiteError.UnknownBindingType(message: "The value wrapped in NSNumber was not recognized. Type string was '\(typeString ?? "nil")'")
         }
         
         let result: Int32
@@ -361,10 +359,10 @@ extension Statement {
     
     /** Returns a float for the column given by the index */
     public func floatForColumn(index: Int32) -> Float? {
-        if typeForColumn(index) == .Null {
-            return nil
+        if let value = doubleForColumn(index) {
+            return Float(value)
         }
-        return doubleForColumn(index) != nil ? Float(doubleForColumn(index)!) : nil
+        return nil
     }
     
     /** Returns a float for the column given by the index */
@@ -377,10 +375,10 @@ extension Statement {
     
     /** Returns a boolean for the column given by the index */
     public func boolForColumn(index: Int32) -> Bool? {
-        if typeForColumn(index) == .Null {
-            return nil
+        if let value = integerForColumn(index) {
+            return Bool(value)
         }
-        return integerForColumn(index) != nil ? Bool(integerForColumn(index)!) : nil
+        return nil
     }
     
     /** Returns a data for the column given by the index */

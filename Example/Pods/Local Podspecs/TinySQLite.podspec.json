@@ -1,6 +1,6 @@
 {
   "name": "TinySQLite",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "summary": "A lightweight wrapper for SQLite written in Swift",
   "homepage": "https://github.com/Oyvindkg/tinysqlite",
   "license": "MIT",
@@ -9,7 +9,7 @@
   },
   "source": {
     "git": "https://github.com/Oyvindkg/tinysqlite.git",
-    "tag": "0.1.0"
+    "tag": "0.2.0"
   },
   "platforms": {
     "ios": "8.0"
