@@ -155,7 +155,7 @@ extension DatabaseConnection {
     }
 }
 
-// MARK: - General 
+// MARK: - General
 extension DatabaseConnection {
     
     /** Number of rows affected by INSERT, UPDATE, or DELETE since the database was opened */

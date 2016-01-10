@@ -24,7 +24,6 @@ public class Statement {
         return NSNumber(int: sqlite3_stmt_busy(handle)).boolValue
     }
     
-    //    TODO: Fix Mappings
     lazy var indexToNameMapping: [Int32: String] = {
         var mapping: [Int32: String] = [:]
         
