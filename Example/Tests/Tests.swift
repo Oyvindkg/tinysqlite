@@ -19,6 +19,7 @@ class DatabaseConnectionTests: XCTestCase {
     }
     
     override func tearDown() {
+        try? database.close()
         try? NSFileManager.defaultManager().removeItemAtPath(path)
         
         super.tearDown()
@@ -44,13 +45,13 @@ class DatabaseConnectionTests: XCTestCase {
     func testBindingsUpdateIsExecuted() {
         try! database.open()
         try! database.executeUpdate("CREATE TABLE TestTable (integer INTEGER, text TEXT, date INTEGER)")
-        XCTAssertNotNil(try? database.executeUpdate("INSERT INTO TestTable VALUES (?, ?, ?)", bindings: [1, "text", 2]))
+        XCTAssertNotNil(try? database.executeUpdate("INSERT INTO TestTable VALUES (?, ?, ?)", values: [1, "text", 2]))
     }
     
     func testNamedBindingsUpdateIsExecuted() {
         try! database.open()
         try! database.executeUpdate("CREATE TABLE TestTable (integer INTEGER, text TEXT, date INTEGER)")
-        XCTAssertNotNil(try? database.executeUpdate("INSERT INTO TestTable VALUES (:int, :text, :date)", namedBindings: ["int": 1, "text": "text", "date": 2]))
+        XCTAssertNotNil(try? database.executeUpdate("INSERT INTO TestTable VALUES (:int, :text, :date)", namedValues: ["int": 1, "text": "text", "date": 2]))
     }
     
     func testContainsTableIsCorrect() {
@@ -67,13 +68,13 @@ class DatabaseConnectionTests: XCTestCase {
 
     func testEndsTransaction() {
         try! database.open()
-        try? database.beginTransaction()
+        try! database.beginTransaction()
         XCTAssertNotNil(try? database.endTransaction())
     }
     
     func testRollsBackTransaction() {
         try! database.open()
-        XCTAssertNotNil(try? database.beginTransaction())
+        try! database.beginTransaction()
         XCTAssertNotNil(try? database.rollback())
     }
 }
