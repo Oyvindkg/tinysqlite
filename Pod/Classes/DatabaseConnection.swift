@@ -181,6 +181,7 @@ extension DatabaseConnection {
         
         let statement = try executeQuery(query, values: [tableName])
         
+        /* Finalize the statement if necessary */
         defer {
             if statement.isBusy {
                 try! statement.finalize()

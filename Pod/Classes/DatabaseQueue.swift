@@ -38,16 +38,15 @@ public class DatabaseQueue {
         /* Run the query on a sequential queue to avoid threading related problems */
         dispatch_sync(_queue) { () -> Void in
             
-            /* After trying to execute the block, close the database if it is open */
-            defer {
-                if self.database.isOpen {
-                    try? self.database.close()
-                }
-            }
-            
             /* Open the database and execute the block. Pass on any errors thrown */
             do {
                 try self.database.open()
+                
+                /* Close the database when leaving this scope */
+                defer {
+                    try? self.database.close()
+                }
+                
                 try block(database: self.database)
             } catch let error {
                 thrownError = error
