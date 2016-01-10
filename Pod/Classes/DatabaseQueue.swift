@@ -14,10 +14,12 @@ public class DatabaseQueue {
     
     private let database:       DatabaseConnection
     
+    /** Create a database queue for the database at the provided path */
     public init(path: String) {
         database = DatabaseConnection(path: path)
     }
     
+    /** Execute a synchronous transaction on the database in a sequential queue */
     public func transaction(block: ((database: DatabaseConnection) throws -> Void)) throws {
         try database { (database) -> Void in
             /* If an error occurs, rollback the transaction and rethrow the error */
@@ -32,10 +34,11 @@ public class DatabaseQueue {
         }
     }
     
+    /** Execute synchronous queries on the database in a sequential queue */
     public func database(block: ((database: DatabaseConnection) throws -> Void)) throws {
         var thrownError: ErrorType?
         
-        /* Run the query on a sequential queue to avoid threading related problems */
+        /* Run the query in a sequential queue to avoid threading related problems */
         dispatch_sync(_queue) { () -> Void in
             
             /* Open the database and execute the block. Pass on any errors thrown */
