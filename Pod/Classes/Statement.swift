@@ -551,6 +551,11 @@ extension Statement {
         return stringForColumn(nameToIndexMapping[name]!)
     }
     
+    /** Returns a character for the column given by the column name */
+    public func characterForColumn(name: String) -> Character? {
+        return characterForColumn(nameToIndexMapping[name]!)
+    }
+    
     /** Returns a string for the column given by the column name */
     public func nsstringForColumn(name: String) -> NSString? {
         return nsstringForColumn(nameToIndexMapping[name]!)

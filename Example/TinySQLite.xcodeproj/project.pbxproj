@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		399C97381C3B2B8E00F54AF1 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 399C97331C3B2B8E00F54AF1 /* .gitkeep */; };
 		399C97391C3B2B8E00F54AF1 /* DatabaseConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399C97341C3B2B8E00F54AF1 /* DatabaseConnection.swift */; };
 		399C973A1C3B2B8E00F54AF1 /* DatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399C97351C3B2B8E00F54AF1 /* DatabaseQueue.swift */; };
 		399C973C1C3B2B8E00F54AF1 /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399C97371C3B2B8E00F54AF1 /* Statement.swift */; };
@@ -17,7 +16,6 @@
 
 /* Begin PBXFileReference section */
 		302D7C69FC84B685E1BFEC8C /* Pods_TinySQLite_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinySQLite_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		399C97331C3B2B8E00F54AF1 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		399C97341C3B2B8E00F54AF1 /* DatabaseConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseConnection.swift; sourceTree = "<group>"; };
 		399C97351C3B2B8E00F54AF1 /* DatabaseQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseQueue.swift; sourceTree = "<group>"; };
 		399C97371C3B2B8E00F54AF1 /* Statement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Statement.swift; sourceTree = "<group>"; };
@@ -55,7 +53,6 @@
 		399C97321C3B2B8E00F54AF1 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				399C97331C3B2B8E00F54AF1 /* .gitkeep */,
 				399C97341C3B2B8E00F54AF1 /* DatabaseConnection.swift */,
 				399C97351C3B2B8E00F54AF1 /* DatabaseQueue.swift */,
 				399C97371C3B2B8E00F54AF1 /* Statement.swift */,
@@ -181,7 +178,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				399C97381C3B2B8E00F54AF1 /* .gitkeep in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
