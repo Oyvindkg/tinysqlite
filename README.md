@@ -54,8 +54,8 @@ let values = ["column": 1, "otherColumn": "A value"]
 Execute an update in the database
 ```Swift
 try databaseQueue.database { (database) in
-    try database.executeUpdate(query, bindings: values)
-    try database.executeUpdate(query, namedBindings: values)
+    try database.executeUpdate(query, values: values)
+    try database.executeUpdate(query, namedValues: values)
 }
 ```
 
