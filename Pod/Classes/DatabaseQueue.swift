@@ -28,7 +28,7 @@ public class DatabaseQueue {
                 try block(database: database)
                 try database.endTransaction()
             } catch let error {
-                try? database.rollback()
+                let _ = try? database.rollback()
                 throw error
             }
         }
@@ -47,7 +47,7 @@ public class DatabaseQueue {
                 
                 /* Close the database when leaving this scope */
                 defer {
-                    try? self.database.close()
+                    let _ = try? self.database.close()
                 }
                 
                 try block(database: self.database)

@@ -30,7 +30,6 @@ extension UInt32: SQLiteValue {}
 extension UInt64: SQLiteValue {}
 
 extension Float: SQLiteValue {}
-extension Float80: SQLiteValue {}
 extension Double: SQLiteValue {}
 
 extension NSData: SQLiteValue {}

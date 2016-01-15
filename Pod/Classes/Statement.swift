@@ -158,8 +158,6 @@ public class Statement {
             result = sqlite3_bind_int64(handle, index, boolValue ? 1 : 0)
             
         /* Bind real values */
-        case let floatValue as Float80:
-            result = sqlite3_bind_double(handle, index, Double(floatValue))
         case let floatValue as Float:
             result = sqlite3_bind_double(handle, index, Double(floatValue))
         case let doubleValue as Double:
@@ -364,14 +362,6 @@ extension Statement {
         return nil
     }
     
-    /** Returns a float for the column given by the index */
-    public func float80ForColumn(index: Int32) -> Float80? {
-        if let value = doubleForColumn(index) {
-            return Float80(value)
-        }
-        return nil
-    }
-    
     /** Returns a boolean for the column given by the index */
     public func boolForColumn(index: Int32) -> Bool? {
         if let value = integerForColumn(index) {
@@ -519,12 +509,7 @@ extension Statement {
     public func doubleForColumn(name: String) -> Double? {
         return doubleForColumn(nameToIndexMapping[name]!)
     }
-    
-    /** Returns a float 80 for the column given by the column name */
-    public func float80ForColumn(name: String) -> Float80? {
-        return float80ForColumn(nameToIndexMapping[name]!)
-    }
-    
+
     /** Returns a float for the column given by the column name */
     public func floatForColumn(name: String) -> Float? {
         return floatForColumn(nameToIndexMapping[name]!)
