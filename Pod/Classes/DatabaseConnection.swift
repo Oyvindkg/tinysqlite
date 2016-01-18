@@ -41,8 +41,119 @@ public typealias NamedSQLiteValues = Dictionary<String, SQLiteValue?>
 
 // MARK: -
 
+public enum Error: Int32, ErrorType, CustomStringConvertible {
+    case OK                 = 0
+    case Error
+    case InternalError
+    case PermissionDenied
+    case Abort
+    case Busy
+    case TableLocked
+    case NoMemory
+    case ReadOnly
+    case Interrupted
+    case IOError
+    case Corrupted
+    case NotFound
+    case Full
+    case CannotOpen
+    case LockProtocol
+    case Empty
+    case Schema
+    case TooBig
+    case ConstraintViolation
+    case DatatypeMismatch
+    case LibraryMisuse
+    case NoLSF
+    case Authorization
+    case InvalidFormat
+    case OutOfRange
+    case NotADatabase
+    case Notification
+    case Warning
+    case Row                = 100
+    case Done               = 101
+    case BindingType
+    case NumberOfBindings
 
-public struct SQLiteResultHandler {
+    public var description: String {
+        return "TinySQLite.Error: \(self.message) (\(rawValue))"
+    }
+    
+    public var message: String {
+        switch self {
+        case .OK:
+            return "Successful result"
+        case .Error:
+            return "SQL error or missing database"
+        case .InternalError:
+            return "Internal logic error in SQLite"
+        case .PermissionDenied:
+            return "Access permission denied"
+        case .Abort:
+            return "Callback routine requested an abort"
+        case .Busy:
+            return "The database file is locked"
+        case .TableLocked:
+            return "A table in the database is locked"
+        case .NoMemory:
+            return "A malloc() failed"
+        case .ReadOnly:
+            return "Attempt to write a readonly database"
+        case .Interrupted:
+            return "Operation terminated by sqlite3_interrupt()"
+        case .IOError:
+            return "Some kind of disk I/O error occurred"
+        case .Corrupted:
+            return "The database disk image is malformed"
+        case .NotFound:
+            return "Unknown opcode in sqlite3_file_control()"
+        case .Full:
+            return "Insertion failed because database is full"
+        case .CannotOpen:
+            return "Unable to open the database file"
+        case .LockProtocol:
+            return "Database lock protocol error"
+        case .Empty:
+            return "Database is empty"
+        case .Schema:
+            return "The database schema changed"
+        case .TooBig:
+            return "String or BLOB exceeds size limit"
+        case .ConstraintViolation:
+            return "Abort due to constraint violation"
+        case .DatatypeMismatch:
+            return "Data type mismatch"
+        case .LibraryMisuse:
+            return "Library used incorrectly"
+        case .NoLSF:
+            return "Uses OS features not supported on host"
+        case .Authorization:
+            return "Authorization denied"
+        case .InvalidFormat:
+            return "Auxiliary database format error"
+        case .OutOfRange:
+            return "2nd parameter to sqlite3_bind out of range"
+        case .NotADatabase:
+            return "File opened that is not a database file"
+        case .Notification:
+            return "Notifications from sqlite3_log()"
+        case .Warning:
+            return "Warnings from sqlite3_log()"
+        case .Row:
+            return "sqlite3_step() has another row ready"
+        case .Done:
+            return "sqlite3_step() has finished executing"
+        case .BindingType:
+            return "Tried to bind an unrecognized data type, or an NSNumber wrapping an unrecognied type"
+        case .NumberOfBindings:
+            return "Incorrect number of bindings"
+            
+        }
+    }
+}
+
+internal struct SQLiteResultHandler {
     static let successCodes: Set<Int32> = [SQLITE_OK, SQLITE_DONE, SQLITE_ROW]
     
     static func isSuccess(resultCode: Int32) -> Bool {
@@ -51,43 +162,12 @@ public struct SQLiteResultHandler {
     
     static func verifyResultCode(resultCode: Int32, forHandle handle: COpaquePointer) throws {
         guard isSuccess(resultCode) else {
-            let errorMessage = NSString(UTF8String: sqlite3_errmsg(handle)) as? String
-            
-            throw TinySQLiteError.SQLiteError(message: "\(errorMessage ?? "ERROR"): " + SQLiteResultHandler.resultMessageForResultCode(resultCode) + " (\(resultCode))")
-        }
-    }
-    
-    static func resultMessageForResultCode(resultCode: Int32) -> String {
-        switch resultCode {
-        case SQLITE_OK:
-            return "Successful result"
-        case SQLITE_ERROR:
-            return "SQL error or missing database"
-        case SQLITE_BUSY:
-            return "The database file is locked"
-        case SQLITE_CONSTRAINT:
-            return "Abort due to constraint violation"
-        case SQLITE_MISMATCH:
-            return "Data type mismatch"
-        case SQLITE_MISUSE:
-            return "Library used incorrectly"
-        case SQLITE_ROW:
-            return "sqlite3_step() has another row ready"
-        case SQLITE_DONE:
-            return "sqlite3_step() has finished executing"
-        default:
-            return "No message configured for result code \(resultCode)"
+            throw Error(rawValue: resultCode)!
         }
     }
 }
 
 // MARK: -
-
-public enum TinySQLiteError: ErrorType {
-    case SQLiteError(message: String)
-    case UnknownBindingType(message: String)
-    case WrongNumberOfBindings(message: String)
-}
 
 internal let SQLITE_STATIC = unsafeBitCast(0, sqlite3_destructor_type.self)
 internal let SQLITE_TRANSIENT = unsafeBitCast(-1, sqlite3_destructor_type.self)
@@ -105,52 +185,52 @@ public class DatabaseConnection {
         self.path = path
     }
     
+    /** Open the database connection */
     public func open() throws {
         try SQLiteResultHandler.verifyResultCode(sqlite3_open(path, &handle), forHandle: handle)
         isOpen = true
     }
     
+    /** Close the database connection */
     public func close() throws {
         try SQLiteResultHandler.verifyResultCode(sqlite3_close(handle), forHandle: handle)
         handle = nil
         isOpen = false
     }
     
-    public func executeUpdate(query: String, values: SQLiteValues = []) throws {
-        try executeQuery(query, values: values).step()
-    }
+    /** 
+    Prepare a statement for the provided query
+     
+    - parameter query:  an SQLite query
     
-    public func executeUpdate(query: String, namedValues: NamedSQLiteValues) throws {
-        try executeQuery(query, namedValues: namedValues).step()
-    }
-    
-    public func executeQuery(query: String, values: SQLiteValues = []) throws -> Statement {
+    - returns:          a prepared statement
+    */
+    public func prepare(query: String) throws -> Statement {
         let statement: Statement = Statement(query)
         try statement.prepareForDatabase(handle)
-        try statement.bind(values)
-        return statement
-    }
-    
-    public func executeQuery(query: String, namedValues: NamedSQLiteValues) throws -> Statement {
-        let statement: Statement = Statement(query)
-        try statement.prepareForDatabase(handle)
-        try statement.bind(namedValues)
         return statement
     }
 }
 
 // MARK: - Transactions
 extension DatabaseConnection {
+    
+    /** Begin a transaction */
     func beginTransaction() throws {
-        try self.executeUpdate("BEGIN TRANSACTION")
+        try self.prepare("BEGIN TRANSACTION")
+                .executeUpdate()
     }
     
+    /** End an ongoing transaction */
     func endTransaction() throws {
-        try self.executeUpdate("END TRANSACTION")
+        try self.prepare("END TRANSACTION")
+                .executeUpdate()
     }
     
+    /** Rollback a transaction */
     func rollback() throws {
-        try self.executeUpdate("ROLLBACK TRANSACTION")
+        try self.prepare("ROLLBACK TRANSACTION")
+                .executeUpdate()
     }
 }
 
@@ -173,18 +253,25 @@ extension DatabaseConnection {
     }
 }
 
-// MARK: - Helpers
+// MARK: - Convenience
 extension DatabaseConnection {
+    
+    /** 
+    Check if a table exists 
+    
+    - parameter tableName:  name of the table
+    
+    - returns:              boolean indicating whether the table exists, or not
+    */
     public func containsTable(tableName: String) throws -> Bool {
         let query = "SELECT name FROM sqlite_master WHERE type='table' AND name=?"
         
-        let statement = try executeQuery(query, values: [tableName])
+        let statement = try prepare(query)
+                                .execute([tableName])
         
         /* Finalize the statement if necessary */
         defer {
-            if statement.isBusy {
-                try! statement.finalize()
-            }
+            try! statement.finalize()
         }
         
         return statement.next() != nil

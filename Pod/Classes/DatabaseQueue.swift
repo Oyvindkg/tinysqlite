@@ -8,7 +8,7 @@
 import Foundation
 
 // TODO: Allow queues working on different databases at the same time
-private let _queue: dispatch_queue_t = dispatch_queue_create( ("swdb.\(arc4random())"), nil)
+private let _queue: dispatch_queue_t = dispatch_queue_create("TinySQLiteQueue", nil)
 
 public class DatabaseQueue {
     
@@ -28,7 +28,7 @@ public class DatabaseQueue {
                 try block(database: database)
                 try database.endTransaction()
             } catch let error {
-                let _ = try? database.rollback()
+                try database.rollback()
                 throw error
             }
         }
@@ -47,7 +47,7 @@ public class DatabaseQueue {
                 
                 /* Close the database when leaving this scope */
                 defer {
-                    let _ = try? self.database.close()
+                    try! self.database.close()
                 }
                 
                 try block(database: self.database)

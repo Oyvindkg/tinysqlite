@@ -52,33 +52,100 @@ public class Statement {
         self.handle = handle
     }
     
+    /** Next row in results */
     public func step() throws -> Bool {
         let result = sqlite3_step(handle)
         
         try SQLiteResultHandler.verifyResultCode(result, forHandle: handle)
         
         if result == SQLITE_DONE {
-            try finalize()
             return false
         }
         
         return true
     }
     
+    /** Clear memory */
     public func finalize() throws {
         try SQLiteResultHandler.verifyResultCode(sqlite3_finalize(handle), forHandle: handle)
     }
     
+    /** ID of the last row inserted */
     public func lastInsertRowId() -> Int? {
         let id = Int(sqlite3_last_insert_rowid(handle))
         return id > 0 ? id : nil
+    }
+    
+// MARK: - Execute query
+    
+    /**
+    Execute a write-only update with an array of variables to bind to placeholders in the prepared query
+    
+    - parameter value:  array of values that will be bound to parameters in the prepared query
+    
+    - returns:          `self`
+    */
+    public func executeUpdate(values: SQLiteValues = []) throws -> Statement {
+        try execute(values)
+        try step()
+        try finalize()
+        return self
+    }
+    
+    /**
+    Execute a write-only update with a dictionary of variables to bind to placeholders in the prepared query
+     
+    - parameter namedValue: dictionary of values that will be bound to parameters in the prepared query
+     
+    - returns:              `self`
+    */
+    public func executeUpdate(namedValues: NamedSQLiteValues) throws -> Statement {
+        try execute(namedValues)
+        try step()
+        try finalize()
+        return self
+    }
+    
+    /**
+    Execute a query with a dictionary of variables to bind to placeholders in the prepared query
+    Finalize the statement when you are done by calling `finalize()`
+     
+    - parameter namedValue: dictionary of values that will be bound to parameters in the prepared query
+     
+    - returns:              `self`
+    */
+    public func execute(namedValues: NamedSQLiteValues) throws -> Statement {
+        try bind(namedValues)
+        return self
+    }
+    
+    /**
+    Execute a query with an array of variables to bind to placeholders in the prepared query
+    Finalize the statement when you are done by calling `finalize()`
+     
+    - parameter value:  array of values that will be bound to parameters in the prepared query
+     
+    - returns:          `self`
+    */
+    public func execute(values: SQLiteValues = []) throws -> Statement {
+        try bind(values)
+        return self
+    }
+    
+// MARK: - Internal methods
+    
+    internal func reset() throws {
+        try SQLiteResultHandler.verifyResultCode(sqlite3_reset(handle), forHandle: handle)
+    }
+    
+    internal func clearBindings() throws {
+        try SQLiteResultHandler.verifyResultCode(sqlite3_clear_bindings(handle), forHandle: handle)
     }
     
     internal func prepareForDatabase(databaseHandle: COpaquePointer) throws {
         try SQLiteResultHandler.verifyResultCode(sqlite3_prepare_v2(databaseHandle, query, -1, &handle, nil), forHandle: handle)
     }
     
-    //    TODO: Merge bind functions
     internal func bind(namedValues: NamedSQLiteValues) throws {
         var parameterNameToIndexMapping: [String: Int32] = [:]
         
@@ -95,6 +162,9 @@ public class Statement {
     }
     
     internal func bind(values: SQLiteValues) throws {
+        try reset()
+        try clearBindings()
+        
         let totalBindCount = sqlite3_bind_parameter_count(handle)
         
         var bindCount: Int32 = 0
@@ -104,9 +174,11 @@ public class Statement {
         }
         
         if bindCount != totalBindCount {
-            throw TinySQLiteError.WrongNumberOfBindings(message: "Wrong number of bindings (was '\(bindCount)', should have been '\(totalBindCount)')")
+            throw Error.NumberOfBindings
         }
     }
+    
+// MARK: - Private methods
     
     private func bindValue(value: SQLiteValue?, forIndex index: Int32) throws {
         if value == nil {
@@ -183,7 +255,7 @@ public class Statement {
         
         let typeString = String.fromCString(numberValue.objCType)
         if typeString == nil || typeString!.isEmpty {
-            throw TinySQLiteError.UnknownBindingType(message: "The value wrapped in NSNumber was not recognized. Type string was '\(typeString ?? "nil")'")
+            throw Error.BindingType
         }
         
         let result: Int32
@@ -551,20 +623,21 @@ extension Statement {
     }
 }
 
-//MARK: - Generator and sequence type
+// MARK: - Generator and sequence type
 extension Statement: GeneratorType, SequenceType {
     
     /** Easily iterate through the rows. Performs a sqlite_step() and returns itself */
     public func next() -> Statement? {
         do {
-            let result = try step()
-            return result ? self : nil
+            let moreRows = try step()
+            return moreRows ? self : nil
         } catch {
             return nil
         }
     }
     
     public func generate() -> Statement {
+        let _ = try? self.reset()
         return self
     }
 }
