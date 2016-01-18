@@ -88,7 +88,6 @@ public class Statement {
     public func executeUpdate(values: SQLiteValues = []) throws -> Statement {
         try execute(values)
         try step()
-        try finalize()
         return self
     }
     
@@ -102,7 +101,6 @@ public class Statement {
     public func executeUpdate(namedValues: NamedSQLiteValues) throws -> Statement {
         try execute(namedValues)
         try step()
-        try finalize()
         return self
     }
     
@@ -155,7 +153,7 @@ public class Statement {
         }
         
         let values: SQLiteValues = namedValues.keys.sort {
-            parameterNameToIndexMapping[$0]! > parameterNameToIndexMapping[$1]!
+            parameterNameToIndexMapping[$0]! < parameterNameToIndexMapping[$1]!
             }.map {namedValues[$0]!}
         
         try bind(values)

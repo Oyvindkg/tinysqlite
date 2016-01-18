@@ -34,7 +34,7 @@ class DatabaseConnectionTests: XCTestCase {
         let database = DatabaseConnection(path: path)
         try! database.open()
         
-        XCTAssertNotNil(try? database.prepare("CREATE TABLE TestTable (integer INTEGER, text TEXT, date INTEGER)").executeUpdate())
+        XCTAssertNotNil(try? database.prepare("CREATE TABLE TestTable (integer INTEGER, text TEXT, date INTEGER)").executeUpdate().finalize())
         
         try! database.close()
     }
@@ -43,8 +43,8 @@ class DatabaseConnectionTests: XCTestCase {
         let database = DatabaseConnection(path: path)
         try! database.open()
         
-        try! database.prepare("CREATE TABLE TestTable (integer INTEGER, text TEXT, date INTEGER)").executeUpdate()
-        XCTAssertNotNil(try? database.prepare("INSERT INTO TestTable VALUES (?, ?, ?)").executeUpdate([1, "text", 2]))
+        try! database.prepare("CREATE TABLE TestTable (integer INTEGER, text TEXT, date INTEGER)").executeUpdate().finalize()
+        XCTAssertNotNil(try? database.prepare("INSERT INTO TestTable VALUES (?, ?, ?)").executeUpdate([1, "text", 2]).finalize())
         
         try! database.close()
     }
@@ -53,8 +53,8 @@ class DatabaseConnectionTests: XCTestCase {
         let database = DatabaseConnection(path: path)
         try! database.open()
         
-        try! database.prepare("CREATE TABLE TestTable (integer INTEGER, text TEXT, date INTEGER)").executeUpdate()
-        XCTAssertNotNil(try? database.prepare("INSERT INTO TestTable VALUES (:int, :text, :date)").executeUpdate(["int": 1, "text": "text", "date": 2]))
+        try! database.prepare("CREATE TABLE TestTable (integer INTEGER, text TEXT, date INTEGER)").executeUpdate().finalize()
+        XCTAssertNotNil(try? database.prepare("INSERT INTO TestTable VALUES (:int, :text, :date)").executeUpdate(["int": 1, "text": "text", "date": 2]).finalize())
         
         try! database.close()
     }
@@ -64,7 +64,7 @@ class DatabaseConnectionTests: XCTestCase {
         try! database.open()
         
         XCTAssertFalse(try! database.containsTable("TestTable"))
-        XCTAssertNotNil(try? database.prepare("CREATE TABLE TestTable (integer INTEGER, text TEXT, date INTEGER)").executeUpdate())
+        XCTAssertNotNil(try? database.prepare("CREATE TABLE TestTable (integer INTEGER, text TEXT, date INTEGER)").executeUpdate().finalize())
         XCTAssertTrue(try! database.containsTable("TestTable"))
         
         try! database.close()

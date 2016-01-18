@@ -219,18 +219,21 @@ extension DatabaseConnection {
     func beginTransaction() throws {
         try self.prepare("BEGIN TRANSACTION")
                 .executeUpdate()
+                .finalize()
     }
     
     /** End an ongoing transaction */
     func endTransaction() throws {
         try self.prepare("END TRANSACTION")
                 .executeUpdate()
+                .finalize()
     }
     
     /** Rollback a transaction */
     func rollback() throws {
         try self.prepare("ROLLBACK TRANSACTION")
                 .executeUpdate()
+                .finalize()
     }
 }
 
