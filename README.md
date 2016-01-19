@@ -47,15 +47,17 @@ To use automatic named binding, replace the values in the statement by ':\<name>
 
 ```Swift
 let query = "INSERT INTO YourTable (column, otherColumn) VALUES (:column, :otherColumn)"
-let values = ["column": 1, "otherColumn": "A value"]
+let namedValues = ["column": 1, "otherColumn": "A value"]
 ```
 
 ### Executing updates
 Execute an update in the database
 ```Swift
 try databaseQueue.database { (database) in
-    try database.executeUpdate(query, values: values)
-    try database.executeUpdate(query, namedValues: values)
+    let statement = try database.prepare(query)
+    statement.executeUpdate(values)
+    statement.executeUpdate(namedValues)
+    statemen.finalize()
 }
 ```
 
@@ -64,11 +66,16 @@ try databaseQueue.database { (database) in
 Execute a query to the database.
 ```Swift
 try databaseQueue.database { (database) in
-    for row in try database.executeQuery(query) {
+    let statement = try database.prepare(query)
+                                .execute()
+    
+    for row in statement {
         row.integerForColumn(2) // Returns an integer from the second column in the row
         row.dateForColumn("deadline") // Returns a date from the column called 'deadline'
         row.dictionary // Returns a dictionary representing the row
     }
+    
+    statement.finalize()
 }
 ```
 
@@ -77,9 +84,11 @@ To improve performance, and prevent partial updates when executing multiple quer
 If an error is thrown in the block, all changes are rolled back. 
 ```Swift
 try databaseQueue.transaction { (database) in
-    try database.executeUpdate(query)
-    try database.executeUpdate(query)
-    try database.executeUpdate(query)
+    try database.prepare(query)
+                .executeUpdate()
+                .executeUpdate()
+                .executeUpdate()
+                .finalize()
 }
 ```
 
