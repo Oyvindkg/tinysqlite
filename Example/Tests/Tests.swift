@@ -6,11 +6,11 @@ class DatabaseConnectionTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        let _ = try? NSFileManager.defaultManager().removeItemAtPath(path)
+        let _ = try? FileManager.default.removeItem(atPath: path)
     }
     
     var path: String {
-        let documentsDirectory : String = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0]
+        let documentsDirectory : String = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0]
         return documentsDirectory+"/testDatabase.sqlite"
     }
 

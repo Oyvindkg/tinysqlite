@@ -32,8 +32,8 @@ extension UInt64: SQLiteValue {}
 extension Float: SQLiteValue {}
 extension Double: SQLiteValue {}
 
-extension NSData: SQLiteValue {}
-extension NSDate: SQLiteValue {}
+extension Data: SQLiteValue {}
+extension Date: SQLiteValue {}
 extension NSNumber: SQLiteValue {}
 
 public typealias SQLiteValues = Array<SQLiteValue?>
@@ -41,40 +41,40 @@ public typealias NamedSQLiteValues = Dictionary<String, SQLiteValue?>
 
 // MARK: -
 
-public enum Error: Int32, ErrorType, CustomStringConvertible {
-    case OK                 = 0
-    case Error
-    case InternalError
-    case PermissionDenied
-    case Abort
-    case Busy
-    case TableLocked
-    case NoMemory
-    case ReadOnly
-    case Interrupted
-    case IOError
-    case Corrupted
-    case NotFound
-    case Full
-    case CannotOpen
-    case LockProtocol
-    case Empty
-    case Schema
-    case TooBig
-    case ConstraintViolation
-    case DatatypeMismatch
-    case LibraryMisuse
-    case NoLSF
-    case Authorization
-    case InvalidFormat
-    case OutOfRange
-    case NotADatabase
-    case Notification
-    case Warning
-    case Row                = 100
-    case Done               = 101
-    case BindingType
-    case NumberOfBindings
+public enum TinyError: Int32, Error, CustomStringConvertible {
+    case ok                 = 0
+    case error
+    case internalError
+    case permissionDenied
+    case abort
+    case busy
+    case tableLocked
+    case noMemory
+    case readOnly
+    case interrupted
+    case ioError
+    case corrupted
+    case notFound
+    case full
+    case cannotOpen
+    case lockProtocol
+    case empty
+    case schema
+    case tooBig
+    case constraintViolation
+    case datatypeMismatch
+    case libraryMisuse
+    case noLSF
+    case authorization
+    case invalidFormat
+    case outOfRange
+    case notADatabase
+    case notification
+    case warning
+    case row                = 100
+    case done               = 101
+    case bindingType
+    case numberOfBindings
 
     public var description: String {
         return "TinySQLite.Error: \(self.message) (\(rawValue))"
@@ -82,71 +82,71 @@ public enum Error: Int32, ErrorType, CustomStringConvertible {
     
     public var message: String {
         switch self {
-        case .OK:
+        case .ok:
             return "Successful result"
-        case .Error:
+        case .error:
             return "SQL error or missing database"
-        case .InternalError:
+        case .internalError:
             return "Internal logic error in SQLite"
-        case .PermissionDenied:
+        case .permissionDenied:
             return "Access permission denied"
-        case .Abort:
+        case .abort:
             return "Callback routine requested an abort"
-        case .Busy:
+        case .busy:
             return "The database file is locked"
-        case .TableLocked:
+        case .tableLocked:
             return "A table in the database is locked"
-        case .NoMemory:
+        case .noMemory:
             return "A malloc() failed"
-        case .ReadOnly:
+        case .readOnly:
             return "Attempt to write a readonly database"
-        case .Interrupted:
+        case .interrupted:
             return "Operation terminated by sqlite3_interrupt()"
-        case .IOError:
+        case .ioError:
             return "Some kind of disk I/O error occurred"
-        case .Corrupted:
+        case .corrupted:
             return "The database disk image is malformed"
-        case .NotFound:
+        case .notFound:
             return "Unknown opcode in sqlite3_file_control()"
-        case .Full:
+        case .full:
             return "Insertion failed because database is full"
-        case .CannotOpen:
+        case .cannotOpen:
             return "Unable to open the database file"
-        case .LockProtocol:
+        case .lockProtocol:
             return "Database lock protocol error"
-        case .Empty:
+        case .empty:
             return "Database is empty"
-        case .Schema:
+        case .schema:
             return "The database schema changed"
-        case .TooBig:
+        case .tooBig:
             return "String or BLOB exceeds size limit"
-        case .ConstraintViolation:
+        case .constraintViolation:
             return "Abort due to constraint violation"
-        case .DatatypeMismatch:
+        case .datatypeMismatch:
             return "Data type mismatch"
-        case .LibraryMisuse:
+        case .libraryMisuse:
             return "Library used incorrectly"
-        case .NoLSF:
+        case .noLSF:
             return "Uses OS features not supported on host"
-        case .Authorization:
+        case .authorization:
             return "Authorization denied"
-        case .InvalidFormat:
+        case .invalidFormat:
             return "Auxiliary database format error"
-        case .OutOfRange:
+        case .outOfRange:
             return "2nd parameter to sqlite3_bind out of range"
-        case .NotADatabase:
+        case .notADatabase:
             return "File opened that is not a database file"
-        case .Notification:
+        case .notification:
             return "Notifications from sqlite3_log()"
-        case .Warning:
+        case .warning:
             return "Warnings from sqlite3_log()"
-        case .Row:
+        case .row:
             return "sqlite3_step() has another row ready"
-        case .Done:
+        case .done:
             return "sqlite3_step() has finished executing"
-        case .BindingType:
+        case .bindingType:
             return "Tried to bind an unrecognized data type, or an NSNumber wrapping an unrecognied type"
-        case .NumberOfBindings:
+        case .numberOfBindings:
             return "Incorrect number of bindings"
             
         }
@@ -156,44 +156,44 @@ public enum Error: Int32, ErrorType, CustomStringConvertible {
 internal struct SQLiteResultHandler {
     static let successCodes: Set<Int32> = [SQLITE_OK, SQLITE_DONE, SQLITE_ROW]
     
-    static func isSuccess(resultCode: Int32) -> Bool {
+    static func isSuccess(_ resultCode: Int32) -> Bool {
         return SQLiteResultHandler.successCodes.contains(resultCode)
     }
     
-    static func verifyResultCode(resultCode: Int32, forHandle handle: COpaquePointer) throws {
+    static func verifyResultCode(_ resultCode: Int32, forHandle handle: OpaquePointer) throws {
         guard isSuccess(resultCode) else {
-            throw Error(rawValue: resultCode)!
+            throw TinyError(rawValue: resultCode)!
         }
     }
 }
 
 // MARK: -
 
-internal let SQLITE_STATIC = unsafeBitCast(0, sqlite3_destructor_type.self)
-internal let SQLITE_TRANSIENT = unsafeBitCast(-1, sqlite3_destructor_type.self)
+internal let SQLITE_STATIC = unsafeBitCast(0, to: sqlite3_destructor_type.self)
+internal let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 
 
 /** Responsible for opening and closing database connections, executing queries, and managing transactions */
-public class DatabaseConnection {
+open class DatabaseConnection {
     
-    private var handle: COpaquePointer = nil
-    private let path: String
+    fileprivate var handle: OpaquePointer? = nil
+    fileprivate let path: String
     
-    public var isOpen: Bool = false
+    open var isOpen: Bool = false
     
     public init(path: String) {
         self.path = path
     }
     
     /** Open the database connection */
-    public func open() throws {
-        try SQLiteResultHandler.verifyResultCode(sqlite3_open(path, &handle), forHandle: handle)
+    open func open() throws {
+        try SQLiteResultHandler.verifyResultCode(sqlite3_open(path, &handle), forHandle: handle!)
         isOpen = true
     }
     
     /** Close the database connection */
-    public func close() throws {
-        try SQLiteResultHandler.verifyResultCode(sqlite3_close(handle), forHandle: handle)
+    open func close() throws {
+        try SQLiteResultHandler.verifyResultCode(sqlite3_close(handle), forHandle: handle!)
         handle = nil
         isOpen = false
     }
@@ -205,9 +205,9 @@ public class DatabaseConnection {
     
     - returns:          a prepared statement
     */
-    public func prepare(query: String) throws -> Statement {
+    open func prepare(_ query: String) throws -> Statement {
         let statement: Statement = Statement(query)
-        try statement.prepareForDatabase(handle)
+        try statement.prepareForDatabase(handle!)
         return statement
     }
 }
@@ -266,7 +266,7 @@ extension DatabaseConnection {
     
     - returns:              boolean indicating whether the table exists, or not
     */
-    public func containsTable(tableName: String) throws -> Bool {
+    public func containsTable(_ tableName: String) throws -> Bool {
         let query = "SELECT name FROM sqlite_master WHERE type='table' AND name=?"
         
         let statement = try prepare(query)
