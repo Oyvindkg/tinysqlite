@@ -151,7 +151,8 @@
 				TargetAttributes = {
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						TestTargetID = 607FACCF1AFB9204008FA782;
+						DevelopmentTeam = FXWNTJ4XVX;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -331,6 +332,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C8177FA6DA7740BFCFA568D7 /* Pods-TinySQLite_Tests.debug.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = FXWNTJ4XVX;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -342,7 +344,7 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TinySQLite_Example.app/TinySQLite_Example";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -350,6 +352,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F7183B5BE47F479A1AA5F611 /* Pods-TinySQLite_Tests.release.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = FXWNTJ4XVX;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -357,7 +360,7 @@
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TinySQLite_Example.app/TinySQLite_Example";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};

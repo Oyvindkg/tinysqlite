@@ -168,7 +168,7 @@ public class Statement {
         var bindCount: Int32 = 0
         for (index, value) in values.enumerate() {
             try bindValue(value, forIndex: Int32(index+1))
-            ++bindCount
+            bindCount += 1
         }
         
         if bindCount != totalBindCount {
