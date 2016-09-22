@@ -8,11 +8,11 @@
 import Foundation
 
 // TODO: Allow queues working on different databases at the same time
-private let _queue: dispatch_queue_t = dispatch_queue_create("TinySQLiteQueue", nil)
+private let _queue = DispatchQueue(label: "TinySQLiteQueue", attributes: [])
 
-public class DatabaseQueue {
+open class DatabaseQueue {
     
-    private let database:       DatabaseConnection
+    fileprivate let database: DatabaseConnection
     
     /** Create a database queue for the database at the provided path */
     public init(path: String) {
@@ -20,12 +20,12 @@ public class DatabaseQueue {
     }
     
     /** Execute a synchronous transaction on the database in a sequential queue */
-    public func transaction(block: ((database: DatabaseConnection) throws -> Void)) throws {
+    open func transaction(_ block: ((_ database: DatabaseConnection) throws -> Void)) throws {
         try database { (database) -> Void in
             /* If an error occurs, rollback the transaction and rethrow the error */
             do {
                 try database.beginTransaction()
-                try block(database: database)
+                try block(database)
                 try database.endTransaction()
             } catch let error {
                 try database.rollback()
@@ -35,31 +35,20 @@ public class DatabaseQueue {
     }
     
     /** Execute synchronous queries on the database in a sequential queue */
-    public func database(block: ((database: DatabaseConnection) throws -> Void)) throws {
-        var thrownError: ErrorType?
+    open func database(_ block: ((_ database: DatabaseConnection) throws -> Void)) throws {
         
         /* Run the query in a sequential queue to avoid threading related problems */
-        dispatch_sync(_queue) { () -> Void in
+        try _queue.sync { () -> Void in
             
             /* Open the database and execute the block. Pass on any errors thrown */
-            do {
-                try self.database.open()
-                
-                /* Close the database when leaving this scope */
-                defer {
-                    try! self.database.close()
-                }
-                
-                try block(database: self.database)
-            } catch let error {
-                thrownError = error
+            try self.database.open()
+            
+            /* Close the database when leaving this scope */
+            defer {
+                try! self.database.close()
             }
-        }
-        
-        /* If an error was thrown during execution, rethrow it */
-        // TODO: Improve the process of passing along the error
-        guard thrownError == nil else {
-            throw thrownError!
+            
+            try block(self.database)
         }
     }
 }
