@@ -4,6 +4,4 @@ use_frameworks!
 
 target 'TinySQLite_Tests', :exclusive => true do
   pod "TinySQLite", :path => "../"
-
-  
 end
