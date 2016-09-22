@@ -11,7 +11,6 @@
 		390688F61D940EFC00F94658 /* DatabaseConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390688F31D940EFC00F94658 /* DatabaseConnection.swift */; };
 		390688F71D940EFC00F94658 /* DatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390688F41D940EFC00F94658 /* DatabaseQueue.swift */; };
 		390688F81D940EFC00F94658 /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390688F51D940EFC00F94658 /* Statement.swift */; };
-		390688FB1D940F1F00F94658 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 390688FA1D940F1F00F94658 /* libsqlite3.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +28,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				390688FB1D940F1F00F94658 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
