@@ -18,7 +18,8 @@ public enum SQLiteDatatype: String {
 
 open class Statement {
     fileprivate var handle: OpaquePointer?
-    var query: String
+    
+    public let query: String
     
     var isBusy: Bool {
         return NSNumber(value: sqlite3_stmt_busy(handle) as Int32).boolValue
@@ -150,16 +151,16 @@ open class Statement {
     }
     
     internal func bind(_ namedValues: NamedSQLiteValues) throws {
-        var parameterNameToIndexMapping: [String: Int32] = [:]
         
-        for (name, _) in namedValues {
+        let totalBindCount = sqlite3_bind_parameter_count(handle)
+        
+        var values: [SQLiteValue?] = Array(repeating: nil, count: Int(totalBindCount))
+        
+        for (name, value) in namedValues {
             let index = sqlite3_bind_parameter_index(handle, ":\(name)")
-            parameterNameToIndexMapping[name] = index
+            
+            values[index-1] = value
         }
-        
-        let values: SQLiteValues = namedValues.keys.sorted {
-            parameterNameToIndexMapping[$0]! < parameterNameToIndexMapping[$1]!
-            }.map {namedValues[$0]!}
         
         try bind(values)
     }
@@ -171,6 +172,7 @@ open class Statement {
         let totalBindCount = sqlite3_bind_parameter_count(handle)
         
         var bindCount: Int32 = 0
+        
         for (index, value) in values.enumerated() {
             try bindValue(value, forIndex: Int32(index+1))
             bindCount += 1
@@ -257,7 +259,8 @@ open class Statement {
     fileprivate func bindNumber(_ numberValue: NSNumber, forIndex index: Int32) throws -> Int32 {
         
         let typeString = String(cString: numberValue.objCType)
-        if typeString == nil || typeString.isEmpty {
+        
+        if typeString.isEmpty {
             throw TinyError.bindingType
         }
         
@@ -327,7 +330,7 @@ extension Statement {
         
         switch columnType {
         case SQLITE_INTEGER:
-            return integerForColumn(index)
+            return integer64ForColumn(index)
         case SQLITE_FLOAT:
             return doubleForColumn(index)
         case SQLITE_TEXT:
