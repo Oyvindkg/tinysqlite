@@ -93,6 +93,7 @@
 			buildPhases = (
 				390688E31D940E7300F94658 /* Sources */,
 				390688E41D940E7300F94658 /* Frameworks */,
+				3921A93E1D950CCC004D3AD5 /* Carthage */,
 				390688E51D940E7300F94658 /* Headers */,
 				390688E61D940E7300F94658 /* Resources */,
 			);
@@ -148,6 +149,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3921A93E1D950CCC004D3AD5 /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/sqlite3.framework ",
+			);
+			name = Carthage;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		390688E31D940E7300F94658 /* Sources */ = {
