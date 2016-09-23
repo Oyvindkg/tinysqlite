@@ -12,7 +12,21 @@
 		390688F71D940EFC00F94658 /* DatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390688F41D940EFC00F94658 /* DatabaseQueue.swift */; };
 		390688F81D940EFC00F94658 /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390688F51D940EFC00F94658 /* Statement.swift */; };
 		390688FD1D9416C500F94658 /* sqlite3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 390688FC1D9416C500F94658 /* sqlite3.framework */; };
+		399923251D9596E300C66AE4 /* sqlite3.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 390688FC1D9416C500F94658 /* sqlite3.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		399923241D9596D700C66AE4 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				399923251D9596E300C66AE4 /* sqlite3.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		390688E81D940E7300F94658 /* TinySQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TinySQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +109,7 @@
 				390688E41D940E7300F94658 /* Frameworks */,
 				390688E51D940E7300F94658 /* Headers */,
 				390688E61D940E7300F94658 /* Resources */,
+				399923241D9596D700C66AE4 /* CopyFiles */,
 			);
 			buildRules = (
 			);

@@ -151,7 +151,6 @@ public enum TinyError: Int32, Error, CustomStringConvertible {
             return "Tried to bind an unrecognized data type, or an NSNumber wrapping an unrecognied type"
         case .numberOfBindings:
             return "Incorrect number of bindings"
-            
         }
     }
 }
