@@ -74,6 +74,7 @@ open class Statement {
     /** ID of the last row inserted */
     open func lastInsertRowId() -> Int? {
         let id = Int(sqlite3_last_insert_rowid(handle))
+        
         return id > 0 ? id : nil
     }
     
