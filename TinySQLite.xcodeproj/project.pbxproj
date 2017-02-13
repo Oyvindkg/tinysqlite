@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		390427361E51FFB300113218 /* TinySQLiteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390427351E51FFB300113218 /* TinySQLiteTests.swift */; };
+		390427361E51FFB300113218 /* DatabaseConnectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390427351E51FFB300113218 /* DatabaseConnectionTests.swift */; };
 		390427381E51FFB300113218 /* TinySQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 390688E81D940E7300F94658 /* TinySQLite.framework */; };
 		390427431E5202D700113218 /* Nimble.framework in Resources */ = {isa = PBXBuildFile; fileRef = 3904273E1E52013400113218 /* Nimble.framework */; };
 		390427441E52040100113218 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3904273E1E52013400113218 /* Nimble.framework */; };
@@ -44,7 +44,7 @@
 
 /* Begin PBXFileReference section */
 		390427331E51FFB300113218 /* TinySQLiteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TinySQLiteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		390427351E51FFB300113218 /* TinySQLiteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinySQLiteTests.swift; sourceTree = "<group>"; };
+		390427351E51FFB300113218 /* DatabaseConnectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseConnectionTests.swift; sourceTree = "<group>"; };
 		390427371E51FFB300113218 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3904273E1E52013400113218 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		390688E81D940E7300F94658 /* TinySQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TinySQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,7 +80,7 @@
 		390427341E51FFB300113218 /* TinySQLiteTests */ = {
 			isa = PBXGroup;
 			children = (
-				390427351E51FFB300113218 /* TinySQLiteTests.swift */,
+				390427351E51FFB300113218 /* DatabaseConnectionTests.swift */,
 				390427371E51FFB300113218 /* Info.plist */,
 			);
 			path = TinySQLiteTests;
@@ -259,7 +259,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				390427361E51FFB300113218 /* TinySQLiteTests.swift in Sources */,
+				390427361E51FFB300113218 /* DatabaseConnectionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

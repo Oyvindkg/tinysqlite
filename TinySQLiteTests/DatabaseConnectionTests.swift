@@ -1,5 +1,5 @@
 //
-//  TinySQLiteTests.swift
+//  DatabaseConnectionTests.swift
 //  TinySQLiteTests
 //
 //  Created by Øyvind Grimnes on 13/02/17.
@@ -11,7 +11,7 @@ import Nimble
 
 @testable import TinySQLite
 
-class TinySQLiteTests: XCTestCase {
+class DatabaseConnectionTests: XCTestCase {
     
     var database: DatabaseConnection!
     
