@@ -57,7 +57,7 @@ open class Statement {
     open func step() throws -> Bool {
         let result = sqlite3_step(handle)
         
-        try ResultHandler.verify(resultCode: result)
+        try ResultHandler.verifyResult(code: result)
         
         if result == SQLITE_DONE {
             return false
@@ -68,7 +68,7 @@ open class Statement {
     
     /** Clear memory */
     open func finalize() throws {
-        try ResultHandler.verify(resultCode: sqlite3_finalize(handle))
+        try ResultHandler.verifyResult(code: sqlite3_finalize(handle))
     }
     
     /** ID of the last row inserted */
@@ -139,7 +139,7 @@ open class Statement {
     // MARK: - Internal methods
     
     fileprivate func reset() throws {
-        try ResultHandler.verify(resultCode: sqlite3_reset(handle))
+        try ResultHandler.verifyResult(code: sqlite3_reset(handle))
     }
     
     fileprivate func clearBindings() throws {
@@ -147,11 +147,11 @@ open class Statement {
             return
         }
         
-        try ResultHandler.verify(resultCode: sqlite3_clear_bindings(handle))
+        try ResultHandler.verifyResult(code: sqlite3_clear_bindings(handle))
     }
     
     internal func prepareForDatabase(_ databaseHandle: OpaquePointer) throws {
-        try ResultHandler.verify(resultCode: sqlite3_prepare_v2(databaseHandle, query, -1, &handle, nil))
+        try ResultHandler.verifyResult(code: sqlite3_prepare_v2(databaseHandle, query, -1, &handle, nil))
     }
     
     fileprivate func bind(values dictionary: [String: SQLiteValue?]) throws {
@@ -191,7 +191,7 @@ open class Statement {
     
     fileprivate func bind(value: SQLiteValue?, forIndex index: Int32) throws {
         if value == nil {
-            try ResultHandler.verify(resultCode: sqlite3_bind_null(handle, index))
+            try ResultHandler.verifyResult(code: sqlite3_bind_null(handle, index))
             return
         }
         
@@ -256,7 +256,7 @@ open class Statement {
             result = sqlite3_bind_text(handle, index, value as! String, -1, SQLITE_TRANSIENT)
         }
         
-        try ResultHandler.verify(resultCode: result)
+        try ResultHandler.verifyResult(code: result)
     }
     
     /** Bind the value wrapped in an NSNumber object based on the values type */

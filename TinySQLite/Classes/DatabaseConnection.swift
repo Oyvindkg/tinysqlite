@@ -28,14 +28,14 @@ open class DatabaseConnection {
     
     /** Open the database connection */
     open func open() throws {
-        try ResultHandler.verify(resultCode: sqlite3_open(location.path, &databaseHandle))
+        try ResultHandler.verifyResult(code: sqlite3_open(location.path, &databaseHandle))
         
         isOpen = true
     }
     
     /** Close the database connection */
     open func close() throws {
-        try ResultHandler.verify(resultCode: sqlite3_close(databaseHandle))
+        try ResultHandler.verifyResult(code: sqlite3_close(databaseHandle))
         
         databaseHandle = nil
         isOpen         = false

@@ -17,7 +17,7 @@ internal struct ResultHandler {
         return ResultHandler.successCodes.contains(resultCode)
     }
     
-    static func verify(resultCode: Int32) throws {
+    static func verifyResult(code resultCode: Int32) throws {
         guard isSuccess(resultCode) else {
             throw TinyError(rawValue: resultCode)!
         }
