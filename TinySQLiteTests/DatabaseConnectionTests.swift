@@ -24,7 +24,7 @@ class DatabaseConnectionTests: XCTestCase {
         
         try? FileManager.default.removeItem(at: databaseLocaiton)
         
-        database = DatabaseConnection(path: databaseLocaiton.path)
+        database = DatabaseConnection(location: databaseLocaiton)
         
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -64,7 +64,7 @@ class DatabaseConnectionTests: XCTestCase {
     func testThrowsErrorIfDatabaseIsNotOpenOnPrepare() {
         let query = "CREATE TABLE dog (name TEST, age INTEGER)"
         
-        expect(try self.database.prepare(query)).to(throwError())
+        expect(try self.database.prepare(query: query)).to(throwError())
     }
     
     func testThrowsErrorIfDatabaseIsNotOpenOnBeginTransaction() {
@@ -101,9 +101,9 @@ class DatabaseConnectionTests: XCTestCase {
         try! database.open()
         try! database.beginTransaction()
         
-        try! database.prepare("CREATE TABLE dog (name TEXT, age INTEGER)").executeUpdate()
+        try! database.prepare(query: "CREATE TABLE dog (name TEXT, age INTEGER)").executeUpdate()
         
-        try! database.rollback()
+        try! database.rollbackTransaction()
         
         expect(try self.database.containsTable("dog")) == false
     }
@@ -112,7 +112,7 @@ class DatabaseConnectionTests: XCTestCase {
         try! database.open()
         try! database.beginTransaction()
         
-        try! database.prepare("CREATE TABLE dog (name TEXT, age INTEGER)").executeUpdate()
+        try! database.prepare(query: "CREATE TABLE dog (name TEXT, age INTEGER)").executeUpdate()
         
         try! database.endTransaction()
         
@@ -134,8 +134,8 @@ class DatabaseConnectionTests: XCTestCase {
     func testNumberOfRowsChangesInLastQueryIsNotZeroAfterAnUpdate() {
         try! database.open()
         
-        try! database.prepare("CREATE TABLE dog (name TEST, age INTEGER)").executeUpdate()
-        try! database.prepare("INSERT INTO dog VALUES (?, ?)").executeUpdate(["fido", 3])
+        try! database.prepare(query: "CREATE TABLE dog (name TEST, age INTEGER)").executeUpdate()
+        try! database.prepare(query: "INSERT INTO dog VALUES (?, ?)").executeUpdate(values: ["fido", 3])
         
         expect(self.database.numberOfRowsChangedInLastQuery()) == 1
     }
@@ -143,9 +143,9 @@ class DatabaseConnectionTests: XCTestCase {
     func testTotalNumberOfRowsChangedAccumulatesTheNumberOfRowChanges() {
         try! database.open()
         
-        try! database.prepare("CREATE TABLE dog (name TEST, age INTEGER)").executeUpdate()
-        try! database.prepare("INSERT INTO dog VALUES (?, ?)").executeUpdate(["fido", 3])
-        try! database.prepare("INSERT INTO dog VALUES (?, ?)").executeUpdate(["fido", 3])
+        try! database.prepare(query: "CREATE TABLE dog (name TEST, age INTEGER)").executeUpdate()
+        try! database.prepare(query: "INSERT INTO dog VALUES (?, ?)").executeUpdate(values: ["fido", 3])
+        try! database.prepare(query: "INSERT INTO dog VALUES (?, ?)").executeUpdate(values: ["fido", 3])
         
         expect(self.database.totalNumberOfRowsChanged()) == 2
     }
@@ -153,9 +153,9 @@ class DatabaseConnectionTests: XCTestCase {
     func testNumberOfRowsChangesInLastQueryDoesNotAccumulateTheNumberOfRowChanges() {
         try! database.open()
         
-        try! database.prepare("CREATE TABLE dog (name TEST, age INTEGER)").executeUpdate()
-        try! database.prepare("INSERT INTO dog VALUES (?, ?)").executeUpdate(["fido", 3])
-        try! database.prepare("INSERT INTO dog VALUES (?, ?)").executeUpdate(["fido", 3])
+        try! database.prepare(query: "CREATE TABLE dog (name TEST, age INTEGER)").executeUpdate()
+        try! database.prepare(query: "INSERT INTO dog VALUES (?, ?)").executeUpdate(values: ["fido", 3])
+        try! database.prepare(query: "INSERT INTO dog VALUES (?, ?)").executeUpdate(values: ["fido", 3])
         
         expect(self.database.numberOfRowsChangedInLastQuery()) == 1
     }
@@ -169,7 +169,7 @@ class DatabaseConnectionTests: XCTestCase {
     func testContainsTableReturnsTrueIfTableExists() {
         try! database.open()
         
-        try! database.prepare("CREATE TABLE dog (name TEST, age INTEGER)").executeUpdate()
+        try! database.prepare(query: "CREATE TABLE dog (name TEST, age INTEGER)").executeUpdate()
         
         expect(try! self.database.containsTable("dog")) == true
     }

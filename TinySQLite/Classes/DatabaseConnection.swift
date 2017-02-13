@@ -156,11 +156,11 @@ public enum TinyError: Int32, Error, CustomStringConvertible {
 internal struct SQLiteResultHandler {
     static let successCodes: Set<Int32> = [SQLITE_OK, SQLITE_DONE, SQLITE_ROW]
     
-    static func isSuccess(_ resultCode: Int32) -> Bool {
+    private static func isSuccess(_ resultCode: Int32) -> Bool {
         return SQLiteResultHandler.successCodes.contains(resultCode)
     }
     
-    static func verifyResultCode(_ resultCode: Int32) throws {
+    static func verify(resultCode: Int32) throws {
         guard isSuccess(resultCode) else {
             throw TinyError(rawValue: resultCode)!
         }
@@ -169,36 +169,36 @@ internal struct SQLiteResultHandler {
 
 // MARK: -
 
-internal let SQLITE_STATIC = unsafeBitCast(0, to: sqlite3_destructor_type.self)
+internal let SQLITE_STATIC    = unsafeBitCast(0, to: sqlite3_destructor_type.self)
 internal let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 
 
 /** Responsible for opening and closing database connections, executing queries, and managing transactions */
 open class DatabaseConnection {
     
-    fileprivate var handle: OpaquePointer? = nil
-    fileprivate let path: String
+    fileprivate var databaseHandle: OpaquePointer?
+    fileprivate let location: URL
     
-    open var isOpen: Bool = false
+    open var isOpen: Bool
     
-    public init(path: String) {
-        self.path = path
+    public init(location: URL) {
+        self.location = location
+        self.isOpen   = false
     }
     
     /** Open the database connection */
     open func open() throws {
-        try SQLiteResultHandler.verifyResultCode(sqlite3_open(path, &handle))
+        try SQLiteResultHandler.verify(resultCode: sqlite3_open(location.path, &databaseHandle))
         
         isOpen = true
     }
     
     /** Close the database connection */
     open func close() throws {
-        try SQLiteResultHandler.verifyResultCode(sqlite3_close(handle))
+        try SQLiteResultHandler.verify(resultCode: sqlite3_close(databaseHandle))
         
-        handle = nil
-        
-        isOpen = false
+        databaseHandle = nil
+        isOpen         = false
     }
     
     /**
@@ -208,8 +208,8 @@ open class DatabaseConnection {
      
      - returns:          a prepared statement
      */
-    open func prepare(_ query: String) throws -> Statement {
-        guard let handle = handle else {
+    open func prepare(query: String) throws -> Statement {
+        guard let handle = databaseHandle else {
             throw TinyError.libraryMisuse
         }
         
@@ -226,21 +226,21 @@ extension DatabaseConnection {
     
     /** Begin a transaction */
     func beginTransaction() throws {
-        try self.prepare("BEGIN TRANSACTION")
+        try self.prepare(query: "BEGIN TRANSACTION")
             .executeUpdate()
             .finalize()
     }
     
     /** End an ongoing transaction */
     func endTransaction() throws {
-        try self.prepare("END TRANSACTION")
+        try self.prepare(query: "END TRANSACTION")
             .executeUpdate()
             .finalize()
     }
     
     /** Rollback a transaction */
-    func rollback() throws {
-        try self.prepare("ROLLBACK TRANSACTION")
+    func rollbackTransaction() throws {
+        try self.prepare(query: "ROLLBACK TRANSACTION")
             .executeUpdate()
             .finalize()
     }
@@ -251,17 +251,17 @@ extension DatabaseConnection {
     
     /** Number of rows affected by INSERT, UPDATE, or DELETE since the database was opened */
     public func numberOfRowsChangedInLastQuery() -> Int {
-        return Int(sqlite3_changes(handle))
+        return Int(sqlite3_changes(databaseHandle))
     }
     
     /** Total number of rows affected by INSERT, UPDATE, or DELETE since the database was opened */
     public func totalNumberOfRowsChanged() -> Int {
-        return Int(sqlite3_total_changes(handle))
+        return Int(sqlite3_total_changes(databaseHandle))
     }
     
     /** Interrupts any pending database operations */
     public func interrupt() {
-        sqlite3_interrupt(handle)
+        sqlite3_interrupt(databaseHandle)
     }
 }
 
@@ -278,8 +278,7 @@ extension DatabaseConnection {
     public func containsTable(_ tableName: String) throws -> Bool {
         let query = "SELECT name FROM sqlite_master WHERE type='table' AND name=?"
         
-        let statement = try prepare(query)
-            .execute([tableName])
+        let statement = try prepare(query: query).execute(values: [tableName])
         
         /* Finalize the statement if necessary */
         defer {

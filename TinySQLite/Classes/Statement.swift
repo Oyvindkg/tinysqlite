@@ -57,7 +57,7 @@ open class Statement {
     open func step() throws -> Bool {
         let result = sqlite3_step(handle)
         
-        try SQLiteResultHandler.verifyResultCode(result)
+        try SQLiteResultHandler.verify(resultCode: result)
         
         if result == SQLITE_DONE {
             return false
@@ -68,7 +68,7 @@ open class Statement {
     
     /** Clear memory */
     open func finalize() throws {
-        try SQLiteResultHandler.verifyResultCode(sqlite3_finalize(handle))
+        try SQLiteResultHandler.verify(resultCode: sqlite3_finalize(handle))
     }
     
     /** ID of the last row inserted */
@@ -86,8 +86,8 @@ open class Statement {
      
      - returns:          `self`
      */
-    @discardableResult open func executeUpdate(_ values: [SQLiteValue?] = []) throws -> Statement {
-        _ = try execute(values)
+    @discardableResult open func executeUpdate(values: [SQLiteValue?] = []) throws -> Statement {
+        _ = try execute(values: values)
         _ = try step()
         
         return self
@@ -100,75 +100,75 @@ open class Statement {
      
      - returns:              `self`
      */
-    @discardableResult open func executeUpdate(_ namedValues: [String: SQLiteValue?]) throws -> Statement {
-        _ = try execute(namedValues)
+    @discardableResult open func executeUpdate(vlaues dictionary: [String: SQLiteValue?]) throws -> Statement {
+        _ = try execute(values: dictionary)
         _ = try step()
         
         return self
     }
     
     /**
-     Execute a query with a dictionary of variables to bind to placeholders in the prepared query
-     Finalize the statement when you are done by calling `finalize()`
+    Execute a query with a dictionary of variables to bind to placeholders in the prepared query
+    Finalize the statement when you are done by calling `finalize()`
      
-     - parameter namedValue: dictionary of values that will be bound to parameters in the prepared query
+    - parameter namedValue: dictionary of values that will be bound to parameters in the prepared query
      
-     - returns:              `self`
-     */
-    open func execute(_ namedValues: [String: SQLiteValue?]) throws -> Statement {
-        try bind(namedValues)
+    - returns:              `self`
+    */
+    open func execute(values: [String: SQLiteValue?]) throws -> Statement {
+        try bind(values: values)
         
         return self
     }
     
     /**
-     Execute a query with an array of variables to bind to placeholders in the prepared query
-     Finalize the statement when you are done by calling `finalize()`
+    Execute a query with an array of variables to bind to placeholders in the prepared query
+    Finalize the statement when you are done by calling `finalize()`
      
-     - parameter value:  array of values that will be bound to parameters in the prepared query
+    - parameter value:  array of values that will be bound to parameters in the prepared query
      
-     - returns:          `self`
-     */
-    open func execute(_ values: [SQLiteValue?]) throws -> Statement {
-        try bind(values)
+    - returns:          `self`
+    */
+    open func execute(values: [SQLiteValue?] = []) throws -> Statement {
+        try bind(values: values)
         
         return self
     }
     
     // MARK: - Internal methods
     
-    internal func reset() throws {
-        try SQLiteResultHandler.verifyResultCode(sqlite3_reset(handle))
+    fileprivate func reset() throws {
+        try SQLiteResultHandler.verify(resultCode: sqlite3_reset(handle))
     }
     
-    internal func clearBindings() throws {
+    fileprivate func clearBindings() throws {
         guard handle != nil else {
             return
         }
         
-        try SQLiteResultHandler.verifyResultCode(sqlite3_clear_bindings(handle))
+        try SQLiteResultHandler.verify(resultCode: sqlite3_clear_bindings(handle))
     }
     
     internal func prepareForDatabase(_ databaseHandle: OpaquePointer) throws {
-        try SQLiteResultHandler.verifyResultCode(sqlite3_prepare_v2(databaseHandle, query, -1, &handle, nil))
+        try SQLiteResultHandler.verify(resultCode: sqlite3_prepare_v2(databaseHandle, query, -1, &handle, nil))
     }
     
-    internal func bind(_ namedValues: [String: SQLiteValue?]) throws {
+    fileprivate func bind(values dictionary: [String: SQLiteValue?]) throws {
         
         let totalBindCount = sqlite3_bind_parameter_count(handle)
         
         var values: [SQLiteValue?] = Array(repeating: nil, count: Int(totalBindCount))
         
-        for (name, value) in namedValues {
+        for (name, value) in dictionary {
             let index = sqlite3_bind_parameter_index(handle, ":\(name)")
             
             values[index-1] = value
         }
         
-        try bind(values)
+        try bind(values: values)
     }
     
-    internal func bind(_ values: [SQLiteValue?]) throws {
+    fileprivate func bind(values: [SQLiteValue?]) throws {
         try reset()
         try clearBindings()
         
@@ -177,7 +177,7 @@ open class Statement {
         var bindCount: Int32 = 0
         
         for (index, value) in values.enumerated() {
-            try bindValue(value, forIndex: Int32(index+1))
+            try bind(value: value, forIndex: Int32(index+1))
             bindCount += 1
         }
         
@@ -188,9 +188,9 @@ open class Statement {
     
     // MARK: - Private methods
     
-    fileprivate func bindValue(_ value: SQLiteValue?, forIndex index: Int32) throws {
+    fileprivate func bind(value: SQLiteValue?, forIndex index: Int32) throws {
         if value == nil {
-            try SQLiteResultHandler.verifyResultCode(sqlite3_bind_null(handle, index))
+            try SQLiteResultHandler.verify(resultCode: sqlite3_bind_null(handle, index))
             return
         }
         
@@ -209,7 +209,7 @@ open class Statement {
             result = sqlite3_bind_blob(handle, index, (dataValue as NSData).bytes, Int32(dataValue.count), SQLITE_TRANSIENT)
             
         case let numberValue as NSNumber:
-            result = try bindNumber(numberValue, forIndex: index)
+            result = try bind(number: numberValue, forIndex: index)
             
             /* Bind integer values */
         case let integerValue as Int:
@@ -255,47 +255,47 @@ open class Statement {
             result = sqlite3_bind_text(handle, index, value as! String, -1, SQLITE_TRANSIENT)
         }
         
-        try SQLiteResultHandler.verifyResultCode(result)
+        try SQLiteResultHandler.verify(resultCode: result)
     }
     
     /** Bind the value wrapped in an NSNumber object based on the values type */
-    fileprivate func bindNumber(_ numberValue: NSNumber, forIndex index: Int32) throws -> Int32 {
+    fileprivate func bind(number: NSNumber, forIndex index: Int32) throws -> Int32 {
         
-        let typeString = String(cString: numberValue.objCType)
+        let type = String(cString: number.objCType)
         
-        if typeString.isEmpty {
+        if type.isEmpty {
             throw TinyError.bindingType
         }
         
         let result: Int32
         
-        switch typeString {
+        switch type {
         case "c":
-            result = sqlite3_bind_int64(handle, index, Int64(numberValue.int8Value))
+            result = sqlite3_bind_int64(handle, index, Int64(number.int8Value))
         case "i":
-            result = sqlite3_bind_int64(handle, index, Int64(numberValue.int32Value))
+            result = sqlite3_bind_int64(handle, index, Int64(number.int32Value))
         case "s":
-            result = sqlite3_bind_int64(handle, index, Int64(numberValue.int16Value))
+            result = sqlite3_bind_int64(handle, index, Int64(number.int16Value))
         case "l":
-            result = sqlite3_bind_int64(handle, index, Int64(numberValue.intValue))
+            result = sqlite3_bind_int64(handle, index, Int64(number.intValue))
         case "q":
-            result = sqlite3_bind_int64(handle, index, numberValue.int64Value)
+            result = sqlite3_bind_int64(handle, index, number.int64Value)
         case "C":
-            result = sqlite3_bind_int64(handle, index, Int64(numberValue.int8Value))
+            result = sqlite3_bind_int64(handle, index, Int64(number.int8Value))
         case "I":
-            result = sqlite3_bind_int64(handle, index, Int64(numberValue.uint32Value))
+            result = sqlite3_bind_int64(handle, index, Int64(number.uint32Value))
         case "S":
-            result = sqlite3_bind_int64(handle, index, Int64(numberValue.uint16Value))
+            result = sqlite3_bind_int64(handle, index, Int64(number.uint16Value))
         case "L":
-            result = sqlite3_bind_int64(handle, index, Int64(numberValue.uintValue))
+            result = sqlite3_bind_int64(handle, index, Int64(number.uintValue))
         case "Q":
-            result = sqlite3_bind_int64(handle, index, Int64(numberValue.uint64Value))
+            result = sqlite3_bind_int64(handle, index, Int64(number.uint64Value))
         case "B":
-            result = sqlite3_bind_int64(handle, index, Int64(numberValue.boolValue ? 1 : 0))
+            result = sqlite3_bind_int64(handle, index, Int64(number.boolValue ? 1 : 0))
         case "f", "d":
-            result = sqlite3_bind_double(handle, index, numberValue.doubleValue)
+            result = sqlite3_bind_double(handle, index, number.doubleValue)
         default:
-            result = sqlite3_bind_text(handle, index, numberValue.description, -1, SQLITE_TRANSIENT)
+            result = sqlite3_bind_text(handle, index, number.description, -1, SQLITE_TRANSIENT)
         }
         
         return result
@@ -310,7 +310,7 @@ open class Statement {
 extension Statement {
     
     /** Returns the datatype for the column given by an index */
-    public func typeForColumn(_ index: Int32) -> SQLiteDatatype? {
+    public func typeForColumn(at index: Int32) -> SQLiteDatatype? {
         switch sqlite3_column_type(handle, index) {
         case SQLITE_INTEGER:
             return .Integer
@@ -328,18 +328,18 @@ extension Statement {
     }
     
     /** Returns a value for the column given by the index based on the columns datatype */
-    public func valueForColumn(_ index: Int32) -> SQLiteValue? {
+    public func valueForColumn(at index: Int32) -> SQLiteValue? {
         let columnType = sqlite3_column_type(handle, index)
         
         switch columnType {
         case SQLITE_INTEGER:
-            return integer64ForColumn(index)
+            return integer64ForColumn(at: index)
         case SQLITE_FLOAT:
-            return doubleForColumn(index)
+            return doubleForColumn(at: index)
         case SQLITE_TEXT:
-            return stringForColumn(index)
+            return stringForColumn(at: index)
         case SQLITE_BLOB:
-            return dataForColumn(index)
+            return dataForColumn(at: index)
         case SQLITE_NULL:
             fallthrough
         default:
@@ -348,112 +348,112 @@ extension Statement {
     }
     
     /** Returns an integer for the column given by the index */
-    public func integerForColumn(_ index: Int32) -> Int? {
-        if let value = integer64ForColumn(index) {
+    public func integerForColumn(at index: Int32) -> Int? {
+        if let value = integer64ForColumn(at: index) {
             return Int(value)
         }
         return nil
     }
     
     /** Returns a 64-bit integer for the column given by the index */
-    public func integer64ForColumn(_ index: Int32) -> Int64? {
-        if typeForColumn(index) == .Null {
+    public func integer64ForColumn(at index: Int32) -> Int64? {
+        if typeForColumn(at: index) == .Null {
             return nil
         }
         return sqlite3_column_int64(handle, index)
     }
     
     /** Returns a 32-bit integer for the column given by the index */
-    public func integer32ForColumn(_ index: Int32) -> Int32? {
-        if let value = integer64ForColumn(index) {
+    public func integer32ForColumn(at index: Int32) -> Int32? {
+        if let value = integer64ForColumn(at: index) {
             return Int32(value)
         }
         return nil
     }
     
     /** Returns a 16-bit integer for the column given by the index */
-    public func integer16ForColumn(_ index: Int32) -> Int16? {
-        if let value = integer64ForColumn(index) {
+    public func integer16ForColumn(at index: Int32) -> Int16? {
+        if let value = integer64ForColumn(at: index) {
             return Int16(value)
         }
         return nil
     }
     
     /** Returns a 8-bit integer for the column given by the index */
-    public func integer8ForColumn(_ index: Int32) -> Int8? {
-        if let value = integer64ForColumn(index) {
+    public func integer8ForColumn(at index: Int32) -> Int8? {
+        if let value = integer64ForColumn(at: index) {
             return Int8(value)
         }
         return nil
     }
     
     /** Returns an unsigned 64-bit integer for the column given by the index */
-    public func unsignedInteger64ForColumn(_ index: Int32) -> UInt64? {
-        if let value = integer64ForColumn(index) {
+    public func unsignedInteger64ForColumn(at index: Int32) -> UInt64? {
+        if let value = integer64ForColumn(at: index) {
             return UInt64(value)
         }
         return nil
     }
     
     /** Returns an unsigned 32-bit integer for the column given by the index */
-    public func unsignedInteger32ForColumn(_ index: Int32) -> UInt32? {
-        if let value = integer64ForColumn(index) {
+    public func unsignedInteger32ForColumn(at index: Int32) -> UInt32? {
+        if let value = integer64ForColumn(at: index) {
             return UInt32(value)
         }
         return nil
     }
     
     /** Returns an unsigned 16-bit integer for the column given by the index */
-    public func unsignedInteger16ForColumn(_ index: Int32) -> UInt16? {
-        if let value = integer64ForColumn(index) {
+    public func unsignedInteger16ForColumn(at index: Int32) -> UInt16? {
+        if let value = integer64ForColumn(at: index) {
             return UInt16(value)
         }
         return nil
     }
     
     /** Returns an unsigned 8-bit integer for the column given by the index */
-    public func unsignedInteger8ForColumn(_ index: Int32) -> UInt8? {
-        if let value = integer64ForColumn(index) {
+    public func unsignedInteger8ForColumn(at index: Int32) -> UInt8? {
+        if let value = integer64ForColumn(at: index) {
             return UInt8(value)
         }
         return nil
     }
     
     /** Returns an unsigned integer for the column given by the index */
-    public func unsignedIntegerForColumn(_ index: Int32) -> UInt? {
-        if let value = integer64ForColumn(index) {
+    public func unsignedIntegerForColumn(at index: Int32) -> UInt? {
+        if let value = integer64ForColumn(at: index) {
             return UInt(value)
         }
         return nil
     }
     
     /** Returns a double for the column given by the index */
-    public func doubleForColumn(_ index: Int32) -> Double? {
-        if typeForColumn(index) == .Null {
+    public func doubleForColumn(at index: Int32) -> Double? {
+        if typeForColumn(at: index) == .Null {
             return nil
         }
         return sqlite3_column_double(handle, index)
     }
     
     /** Returns a float for the column given by the index */
-    public func floatForColumn(_ index: Int32) -> Float? {
-        if let value = doubleForColumn(index) {
+    public func floatForColumn(at index: Int32) -> Float? {
+        if let value = doubleForColumn(at: index) {
             return Float(value)
         }
         return nil
     }
     
     /** Returns a boolean for the column given by the index */
-    public func boolForColumn(_ index: Int32) -> Bool? {
-        if let value = integerForColumn(index) {
+    public func boolForColumn(at index: Int32) -> Bool? {
+        if let value = integerForColumn(at: index) {
             return value > 0
         }
         return nil
     }
     
     /** Returns a data for the column given by the index */
-    public func dataForColumn(_ index: Int32) -> Data? {
-        if typeForColumn(index) == .Null {
+    public func dataForColumn(at index: Int32) -> Data? {
+        if typeForColumn(at: index) == .Null {
             return nil
         }
         
@@ -464,37 +464,42 @@ extension Statement {
     }
     
     /** Returns an date for the column given by the index */
-    public func dateForColumn(_ index: Int32) -> Date? {
-        if typeForColumn(index) == .Null {
+    public func dateForColumn(at index: Int32) -> Date? {
+        if typeForColumn(at: index) == .Null {
             return nil
         }
-        return doubleForColumn(index) != nil ? Date(timeIntervalSince1970: doubleForColumn(index)!) : nil
+        
+        guard let timeInterval = doubleForColumn(at: index) else {
+            return nil
+        }
+        
+        return Date(timeIntervalSince1970: timeInterval)
     }
     
     /** Returns a string for the column given by the index */
-    public func stringForColumn(_ index: Int32) -> String? {
-        return nsstringForColumn(index) as? String
+    public func stringForColumn(at index: Int32) -> String? {
+        return nsstringForColumn(at: index) as? String
     }
     
     /** Returns a character for the column given by the index */
-    public func characterForColumn(_ index: Int32) -> Character? {
-        return stringForColumn(index)?.characters.first
+    public func characterForColumn(at index: Int32) -> Character? {
+        return stringForColumn(at: index)?.characters.first
     }
     
     /** Returns a string for the column given by the index */
-    public func nsstringForColumn(_ index: Int32) -> NSString? {
+    public func nsstringForColumn(at index: Int32) -> NSString? {
         return NSString(bytes: sqlite3_column_text(handle, index), length: Int(sqlite3_column_bytes(handle, index)), encoding: String.Encoding.utf8.rawValue)
     }
     
     /** Returns a number for the column given by the index */
-    public func numberForColumn(_ index: Int32) -> NSNumber? {
+    public func numberForColumn(at index: Int32) -> NSNumber? {
         switch sqlite3_column_type(handle, index) {
         case SQLITE_INTEGER:
-            return integerForColumn(index) as NSNumber?
+            return integerForColumn(at: index) as NSNumber?
         case SQLITE_FLOAT:
-            return doubleForColumn(index) as NSNumber?
+            return doubleForColumn(at: index) as NSNumber?
         case SQLITE_TEXT:
-            if let stringValue = stringForColumn(index) {
+            if let stringValue = stringForColumn(at: index) {
                 return Int(stringValue) as NSNumber?
             }
             return nil
@@ -516,7 +521,7 @@ extension Statement {
         var dictionary: [String: SQLiteValue?] = [:]
         
         for i in 0..<sqlite3_column_count(handle) {
-            dictionary[indexToNameMapping[i]!] = valueForColumn(i)
+            dictionary[indexToNameMapping[i]!] = valueForColumn(at: i)
         }
         
         return dictionary
@@ -532,107 +537,107 @@ extension Statement {
     
     /** Returns the datatype for the column given by a column name */
     public func typeForColumn(_ name: String) -> SQLiteDatatype? {
-        return typeForColumn(nameToIndexMapping[name]!)
+        return typeForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns a value for the column given by the column name, based on the SQLite datatype of the column */
     public func valueForColumn(_ name: String) -> SQLiteValue? {
-        return valueForColumn(nameToIndexMapping[name]!)
+        return valueForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns an integer for the column given by the column name */
     public func integerForColumn(_ name: String) -> Int? {
-        return integerForColumn(nameToIndexMapping[name]!)
+        return integerForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns a 64-bit integer for the column given by the column name  */
     public func integer64ForColumn(_ name: String) -> Int64? {
-        return  integer64ForColumn(nameToIndexMapping[name]!)
+        return  integer64ForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns a 32-bit integer for the column given by the column name  */
     public func integer32ForColumn(_ name: String) -> Int32? {
-        return integer32ForColumn(nameToIndexMapping[name]!)
+        return integer32ForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns a 16-bit integer for the column given by the column name  */
     public func integer16ForColumn(_ name: String) -> Int16? {
-        return integer16ForColumn(nameToIndexMapping[name]!)
+        return integer16ForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns a 8-bit integer for the column given by the column name  */
     public func integer8ForColumn(_ name: String) -> Int8? {
-        return integer8ForColumn(nameToIndexMapping[name]!)
+        return integer8ForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns an unsigned 64-bit integer for the column given by the column name  */
     public func unsignedInteger64ForColumn(_ name: String) -> UInt64? {
-        return unsignedInteger64ForColumn(nameToIndexMapping[name]!)
+        return unsignedInteger64ForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns an unsigned 32-bit integer for the column given by the column name  */
     public func unsignedInteger32ForColumn(_ name: String) -> UInt32? {
-        return unsignedInteger32ForColumn(nameToIndexMapping[name]!)
+        return unsignedInteger32ForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns an unsigned 16-bit integer for the column given by the column name  */
     public func unsignedInteger16ForColumn(_ name: String) -> UInt16? {
-        return unsignedInteger16ForColumn(nameToIndexMapping[name]!)
+        return unsignedInteger16ForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns an unsigned 8-bit integer for the column given by the index */
     public func unsignedInteger8ForColumn(_ name: String) -> UInt8? {
-        return unsignedInteger8ForColumn(nameToIndexMapping[name]!)
+        return unsignedInteger8ForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns an unsigned integer for the column given by the column name  */
     public func unsignedIntegerForColumn(_ name: String) -> UInt? {
-        return unsignedIntegerForColumn(nameToIndexMapping[name]!)
+        return unsignedIntegerForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns a double for the column given by the column name */
     public func doubleForColumn(_ name: String) -> Double? {
-        return doubleForColumn(nameToIndexMapping[name]!)
+        return doubleForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns a float for the column given by the column name */
     public func floatForColumn(_ name: String) -> Float? {
-        return floatForColumn(nameToIndexMapping[name]!)
+        return floatForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns a boolean for the column given by the column name */
     public func boolForColumn(_ name: String) -> Bool? {
-        return boolForColumn(nameToIndexMapping[name]!)
+        return boolForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns data for the column given by the column name */
     public func dataForColumn(_ name: String) -> Data? {
-        return dataForColumn(nameToIndexMapping[name]!)
+        return dataForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns a date for the column given by the column name */
     public func dateForColumn(_ name: String) -> Date? {
-        return dateForColumn(nameToIndexMapping[name]!)
+        return dateForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns a string for the column given by the column name */
     public func stringForColumn(_ name: String) -> String? {
-        return stringForColumn(nameToIndexMapping[name]!)
+        return stringForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns a character for the column given by the column name */
     public func characterForColumn(_ name: String) -> Character? {
-        return characterForColumn(nameToIndexMapping[name]!)
+        return characterForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns a string for the column given by the column name */
     public func nsstringForColumn(_ name: String) -> NSString? {
-        return nsstringForColumn(nameToIndexMapping[name]!)
+        return nsstringForColumn(at: nameToIndexMapping[name]!)
     }
     
     /** Returns a number for the column given by the column name */
     public func numberForColumn(_ name: String) -> NSNumber? {
-        return numberForColumn(nameToIndexMapping[name]!)
+        return numberForColumn(at: nameToIndexMapping[name]!)
     }
 }
 
