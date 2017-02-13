@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		390427361E51FFB300113218 /* TinySQLiteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390427351E51FFB300113218 /* TinySQLiteTests.swift */; };
+		390427381E51FFB300113218 /* TinySQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 390688E81D940E7300F94658 /* TinySQLite.framework */; };
+		390427431E5202D700113218 /* Nimble.framework in Resources */ = {isa = PBXBuildFile; fileRef = 3904273E1E52013400113218 /* Nimble.framework */; };
+		390427441E52040100113218 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3904273E1E52013400113218 /* Nimble.framework */; };
 		390688ED1D940E7300F94658 /* TinySQLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 390688EB1D940E7300F94658 /* TinySQLite.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		390688F61D940EFC00F94658 /* DatabaseConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390688F31D940EFC00F94658 /* DatabaseConnection.swift */; };
 		390688F71D940EFC00F94658 /* DatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390688F41D940EFC00F94658 /* DatabaseQueue.swift */; };
@@ -14,6 +18,16 @@
 		390688FD1D9416C500F94658 /* sqlite3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 390688FC1D9416C500F94658 /* sqlite3.framework */; };
 		399923251D9596E300C66AE4 /* sqlite3.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 390688FC1D9416C500F94658 /* sqlite3.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		390427391E51FFB300113218 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 390688DF1D940E7300F94658 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 390688E71D940E7300F94658;
+			remoteInfo = TinySQLite;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		399923241D9596D700C66AE4 /* CopyFiles */ = {
@@ -29,6 +43,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		390427331E51FFB300113218 /* TinySQLiteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TinySQLiteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		390427351E51FFB300113218 /* TinySQLiteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinySQLiteTests.swift; sourceTree = "<group>"; };
+		390427371E51FFB300113218 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3904273E1E52013400113218 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
 		390688E81D940E7300F94658 /* TinySQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TinySQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		390688EB1D940E7300F94658 /* TinySQLite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TinySQLite.h; sourceTree = "<group>"; };
 		390688EC1D940E7300F94658 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -39,6 +57,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		390427301E51FFB300113218 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				390427441E52040100113218 /* Nimble.framework in Frameworks */,
+				390427381E51FFB300113218 /* TinySQLite.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		390688E41D940E7300F94658 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -50,10 +77,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		390427341E51FFB300113218 /* TinySQLiteTests */ = {
+			isa = PBXGroup;
+			children = (
+				390427351E51FFB300113218 /* TinySQLiteTests.swift */,
+				390427371E51FFB300113218 /* Info.plist */,
+			);
+			path = TinySQLiteTests;
+			sourceTree = "<group>";
+		};
 		390688DE1D940E7300F94658 = {
 			isa = PBXGroup;
 			children = (
 				390688EA1D940E7300F94658 /* TinySQLite */,
+				390427341E51FFB300113218 /* TinySQLiteTests */,
 				390688E91D940E7300F94658 /* Products */,
 				390688F91D940F1F00F94658 /* Frameworks */,
 			);
@@ -63,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				390688E81D940E7300F94658 /* TinySQLite.framework */,
+				390427331E51FFB300113218 /* TinySQLiteTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -82,6 +120,7 @@
 		390688F91D940F1F00F94658 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3904273E1E52013400113218 /* Nimble.framework */,
 				390688FC1D9416C500F94658 /* sqlite3.framework */,
 			);
 			name = Frameworks;
@@ -101,6 +140,25 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		390427321E51FFB300113218 /* TinySQLiteTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3904273D1E51FFB300113218 /* Build configuration list for PBXNativeTarget "TinySQLiteTests" */;
+			buildPhases = (
+				3904272F1E51FFB300113218 /* Sources */,
+				390427301E51FFB300113218 /* Frameworks */,
+				390427311E51FFB300113218 /* Resources */,
+				390427451E52043A00113218 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3904273A1E51FFB300113218 /* PBXTargetDependency */,
+			);
+			name = TinySQLiteTests;
+			productName = TinySQLiteTests;
+			productReference = 390427331E51FFB300113218 /* TinySQLiteTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		390688E71D940E7300F94658 /* TinySQLite */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 390688F01D940E7300F94658 /* Build configuration list for PBXNativeTarget "TinySQLite" */;
@@ -126,9 +184,15 @@
 		390688DF1D940E7300F94658 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0820;
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Øyvind Grimnes";
 				TargetAttributes = {
+					390427321E51FFB300113218 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = FXWNTJ4XVX;
+						ProvisioningStyle = Automatic;
+					};
 					390688E71D940E7300F94658 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = FXWNTJ4XVX;
@@ -150,11 +214,20 @@
 			projectRoot = "";
 			targets = (
 				390688E71D940E7300F94658 /* TinySQLite */,
+				390427321E51FFB300113218 /* TinySQLiteTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		390427311E51FFB300113218 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				390427431E5202D700113218 /* Nimble.framework in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		390688E61D940E7300F94658 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -164,7 +237,32 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		390427451E52043A00113218 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Nimble.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		3904272F1E51FFB300113218 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				390427361E51FFB300113218 /* TinySQLiteTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		390688E31D940E7300F94658 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -177,7 +275,54 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		3904273A1E51FFB300113218 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 390688E71D940E7300F94658 /* TinySQLite */;
+			targetProxy = 390427391E51FFB300113218 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		3904273B1E51FFB300113218 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				DEVELOPMENT_TEAM = FXWNTJ4XVX;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = TinySQLiteTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.skaptronderen.TinySQLiteTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		3904273C1E51FFB300113218 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				DEVELOPMENT_TEAM = FXWNTJ4XVX;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = TinySQLiteTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.skaptronderen.TinySQLiteTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 		390688EE1D940E7300F94658 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -326,6 +471,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3904273D1E51FFB300113218 /* Build configuration list for PBXNativeTarget "TinySQLiteTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3904273B1E51FFB300113218 /* Debug */,
+				3904273C1E51FFB300113218 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		390688E21D940E7300F94658 /* Build configuration list for PBXProject "TinySQLite" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

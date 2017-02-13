@@ -39,8 +39,6 @@ extension NSData: SQLiteValue {}
 extension NSDate: SQLiteValue {}
 extension NSNumber: SQLiteValue {}
 
-public typealias SQLiteValues = Array<SQLiteValue?>
-public typealias NamedSQLiteValues = Dictionary<String, SQLiteValue?>
 
 // MARK: -
 
@@ -190,13 +188,16 @@ open class DatabaseConnection {
     /** Open the database connection */
     open func open() throws {
         try SQLiteResultHandler.verifyResultCode(sqlite3_open(path, &handle))
+        
         isOpen = true
     }
     
     /** Close the database connection */
     open func close() throws {
         try SQLiteResultHandler.verifyResultCode(sqlite3_close(handle))
+        
         handle = nil
+        
         isOpen = false
     }
     
@@ -208,8 +209,14 @@ open class DatabaseConnection {
      - returns:          a prepared statement
      */
     open func prepare(_ query: String) throws -> Statement {
+        guard let handle = handle else {
+            throw TinyError.libraryMisuse
+        }
+        
         let statement: Statement = Statement(query)
-        try statement.prepareForDatabase(handle!)
+        
+        try statement.prepareForDatabase(handle)
+        
         return statement
     }
 }
@@ -243,12 +250,12 @@ extension DatabaseConnection {
 extension DatabaseConnection {
     
     /** Number of rows affected by INSERT, UPDATE, or DELETE since the database was opened */
-    public func changes() -> Int {
+    public func numberOfRowsChangedInLastQuery() -> Int {
         return Int(sqlite3_changes(handle))
     }
     
     /** Total number of rows affected by INSERT, UPDATE, or DELETE since the database was opened */
-    public func totalChanges() -> Int {
+    public func totalNumberOfRowsChanged() -> Int {
         return Int(sqlite3_total_changes(handle))
     }
     

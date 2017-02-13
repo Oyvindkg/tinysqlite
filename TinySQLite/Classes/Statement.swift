@@ -86,9 +86,10 @@ open class Statement {
      
      - returns:          `self`
      */
-    open func executeUpdate(_ values: SQLiteValues = []) throws -> Statement {
-        try execute(values)
-        try step()
+    @discardableResult open func executeUpdate(_ values: [SQLiteValue?] = []) throws -> Statement {
+        _ = try execute(values)
+        _ = try step()
+        
         return self
     }
     
@@ -99,9 +100,10 @@ open class Statement {
      
      - returns:              `self`
      */
-    open func executeUpdate(_ namedValues: NamedSQLiteValues) throws -> Statement {
-        try execute(namedValues)
-        try step()
+    @discardableResult open func executeUpdate(_ namedValues: [String: SQLiteValue?]) throws -> Statement {
+        _ = try execute(namedValues)
+        _ = try step()
+        
         return self
     }
     
@@ -113,8 +115,9 @@ open class Statement {
      
      - returns:              `self`
      */
-    open func execute(_ namedValues: NamedSQLiteValues) throws -> Statement {
+    open func execute(_ namedValues: [String: SQLiteValue?]) throws -> Statement {
         try bind(namedValues)
+        
         return self
     }
     
@@ -126,7 +129,7 @@ open class Statement {
      
      - returns:          `self`
      */
-    open func execute(_ values: SQLiteValues = []) throws -> Statement {
+    open func execute(_ values: [SQLiteValue?]) throws -> Statement {
         try bind(values)
         
         return self
@@ -150,7 +153,7 @@ open class Statement {
         try SQLiteResultHandler.verifyResultCode(sqlite3_prepare_v2(databaseHandle, query, -1, &handle, nil))
     }
     
-    internal func bind(_ namedValues: NamedSQLiteValues) throws {
+    internal func bind(_ namedValues: [String: SQLiteValue?]) throws {
         
         let totalBindCount = sqlite3_bind_parameter_count(handle)
         
@@ -165,7 +168,7 @@ open class Statement {
         try bind(values)
     }
     
-    internal func bind(_ values: SQLiteValues) throws {
+    internal func bind(_ values: [SQLiteValue?]) throws {
         try reset()
         try clearBindings()
         
@@ -509,8 +512,8 @@ extension Statement {
 extension Statement {
     
     /** A dictionary representation of the data contained in the row */
-    public var dictionary: NamedSQLiteValues {
-        var dictionary: NamedSQLiteValues = [:]
+    public var dictionary: [String: SQLiteValue?] {
+        var dictionary: [String: SQLiteValue?] = [:]
         
         for i in 0..<sqlite3_column_count(handle) {
             dictionary[indexToNameMapping[i]!] = valueForColumn(i)

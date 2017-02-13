@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "390427321E51FFB300113218"
+               BuildableName = "TinySQLiteTests.xctest"
+               BlueprintName = "TinySQLiteTests"
+               ReferencedContainer = "container:TinySQLite.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "390688E71D940E7300F94658"
+            BuildableName = "TinySQLite.framework"
+            BlueprintName = "TinySQLite"
+            ReferencedContainer = "container:TinySQLite.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

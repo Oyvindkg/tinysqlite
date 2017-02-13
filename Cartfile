@@ -1,1 +1,2 @@
 github "Oyvindkg/sqlite3" "master"
+github "Quick/Nimble" "v6.0.1"
