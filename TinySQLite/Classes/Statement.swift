@@ -7,7 +7,7 @@
 
 import sqlite3
 
-public enum SQLiteDatatype: String {
+public enum Datatype: String {
     case Text       = "TEXT"
     case Integer    = "INTEGER"
     case Real       = "REAL"
@@ -57,7 +57,7 @@ open class Statement {
     open func step() throws -> Bool {
         let result = sqlite3_step(handle)
         
-        try SQLiteResultHandler.verify(resultCode: result)
+        try ResultHandler.verify(resultCode: result)
         
         if result == SQLITE_DONE {
             return false
@@ -68,7 +68,7 @@ open class Statement {
     
     /** Clear memory */
     open func finalize() throws {
-        try SQLiteResultHandler.verify(resultCode: sqlite3_finalize(handle))
+        try ResultHandler.verify(resultCode: sqlite3_finalize(handle))
     }
     
     /** ID of the last row inserted */
@@ -138,7 +138,7 @@ open class Statement {
     // MARK: - Internal methods
     
     fileprivate func reset() throws {
-        try SQLiteResultHandler.verify(resultCode: sqlite3_reset(handle))
+        try ResultHandler.verify(resultCode: sqlite3_reset(handle))
     }
     
     fileprivate func clearBindings() throws {
@@ -146,11 +146,11 @@ open class Statement {
             return
         }
         
-        try SQLiteResultHandler.verify(resultCode: sqlite3_clear_bindings(handle))
+        try ResultHandler.verify(resultCode: sqlite3_clear_bindings(handle))
     }
     
     internal func prepareForDatabase(_ databaseHandle: OpaquePointer) throws {
-        try SQLiteResultHandler.verify(resultCode: sqlite3_prepare_v2(databaseHandle, query, -1, &handle, nil))
+        try ResultHandler.verify(resultCode: sqlite3_prepare_v2(databaseHandle, query, -1, &handle, nil))
     }
     
     fileprivate func bind(values dictionary: [String: SQLiteValue?]) throws {
@@ -190,7 +190,7 @@ open class Statement {
     
     fileprivate func bind(value: SQLiteValue?, forIndex index: Int32) throws {
         if value == nil {
-            try SQLiteResultHandler.verify(resultCode: sqlite3_bind_null(handle, index))
+            try ResultHandler.verify(resultCode: sqlite3_bind_null(handle, index))
             return
         }
         
@@ -255,7 +255,7 @@ open class Statement {
             result = sqlite3_bind_text(handle, index, value as! String, -1, SQLITE_TRANSIENT)
         }
         
-        try SQLiteResultHandler.verify(resultCode: result)
+        try ResultHandler.verify(resultCode: result)
     }
     
     /** Bind the value wrapped in an NSNumber object based on the values type */
@@ -310,7 +310,7 @@ open class Statement {
 extension Statement {
     
     /** Returns the datatype for the column given by an index */
-    public func typeForColumn(at index: Int32) -> SQLiteDatatype? {
+    public func typeForColumn(at index: Int32) -> Datatype? {
         switch sqlite3_column_type(handle, index) {
         case SQLITE_INTEGER:
             return .Integer
@@ -536,7 +536,7 @@ extension Statement {
 extension Statement {
     
     /** Returns the datatype for the column given by a column name */
-    public func typeForColumn(_ name: String) -> SQLiteDatatype? {
+    public func typeForColumn(_ name: String) -> Datatype? {
         return typeForColumn(at: nameToIndexMapping[name]!)
     }
     
