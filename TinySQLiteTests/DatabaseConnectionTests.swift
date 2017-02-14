@@ -172,7 +172,7 @@ class DatabaseConnectionTests: XCTestCase {
         try! database.open()
         
         try! database.statement(for: "CREATE TABLE dog (name TEST, age INTEGER)").executeUpdate()
-        print(try! database.contains(view: "index"))
+
         expect(try! self.database.contains(table: "dog")) == true
     }
     

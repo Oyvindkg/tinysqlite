@@ -207,6 +207,7 @@ public class Statement {
             if dataValue.count == 0 {
                 print("[ WARNING: Data values with zero bytes are treated as NULL by SQLite ]")
             }
+            
             result = sqlite3_bind_blob(statementHandle, index, (dataValue as NSData).bytes, Int32(dataValue.count), SQLITE_TRANSIENT)
             
         case let numberValue as NSNumber:
@@ -230,8 +231,6 @@ public class Statement {
         case let integerValue as UInt16:
             result = sqlite3_bind_int64(statementHandle, index, Int64(integerValue))
         case let integerValue as UInt32:
-            result = sqlite3_bind_int64(statementHandle, index, Int64(integerValue))
-        case let integerValue as UInt64:
             result = sqlite3_bind_int64(statementHandle, index, Int64(integerValue))
             
             /* Bind boolean values */

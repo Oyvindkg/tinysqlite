@@ -27,7 +27,6 @@ extension UInt: SQLiteValue {}
 extension UInt8: SQLiteValue {}
 extension UInt16: SQLiteValue {}
 extension UInt32: SQLiteValue {}
-extension UInt64: SQLiteValue {}
 
 extension Float: SQLiteValue {}
 extension Double: SQLiteValue {}
