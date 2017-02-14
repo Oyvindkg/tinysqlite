@@ -185,7 +185,7 @@ public class Statement {
         }
         
         if bindCount != totalBindCount {
-            throw TinyError.numberOfBindings
+            throw TinyError.failedToBindParameters(message: "Expected \(totalBindCount) parameters, but got \(bindCount)")
         }
     }
     
@@ -266,7 +266,7 @@ public class Statement {
         let type = String(cString: number.objCType)
         
         if type.isEmpty {
-            throw TinyError.bindingType
+            throw TinyError.failedToBindParameters(message: "Did not recognize the value type wrapped by the NSNumber with value \(number) at parameter index \(index)")
         }
         
         let result: Int32

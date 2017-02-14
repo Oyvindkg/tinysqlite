@@ -124,13 +124,13 @@ class DatabaseConnectionTests: XCTestCase {
     func testNumberOfRowsChangesInLastQueryIsZeroBeforeUpdates() {
         try! database.open()
         
-        expect(self.database.numberOfRowsChangedInLastQuery()) == 0
+        expect(self.database.numberOfChanges) == 0
     }
     
     func testTotalNumberOfRowsChangesIsZeroBeforeUpdates() {
         try! database.open()
         
-        expect(self.database.totalNumberOfRowsChanged()) == 0
+        expect(self.database.totalNumberOfChanges) == 0
     }
     
     func testNumberOfRowsChangesInLastQueryIsNotZeroAfterAnUpdate() {
@@ -139,7 +139,7 @@ class DatabaseConnectionTests: XCTestCase {
         try! database.statement(for: "CREATE TABLE dog (name TEST, age INTEGER)").executeUpdate()
         try! database.statement(for: "INSERT INTO dog VALUES (?, ?)").executeUpdate(withParameters: ["fido", 3])
         
-        expect(self.database.numberOfRowsChangedInLastQuery()) == 1
+        expect(self.database.numberOfChanges) == 1
     }
     
     func testTotalNumberOfRowsChangedAccumulatesTheNumberOfRowChanges() {
@@ -149,7 +149,7 @@ class DatabaseConnectionTests: XCTestCase {
         try! database.statement(for: "INSERT INTO dog VALUES (?, ?)").executeUpdate(withParameters: ["fido", 3])
         try! database.statement(for: "INSERT INTO dog VALUES (?, ?)").executeUpdate(withParameters: ["fido", 3])
         
-        expect(self.database.totalNumberOfRowsChanged()) == 2
+        expect(self.database.totalNumberOfChanges) == 2
     }
     
     func testNumberOfRowsChangesInLastQueryDoesNotAccumulateTheNumberOfRowChanges() {
@@ -159,7 +159,7 @@ class DatabaseConnectionTests: XCTestCase {
         try! database.statement(for: "INSERT INTO dog VALUES (?, ?)").executeUpdate(withParameters: ["fido", 3])
         try! database.statement(for: "INSERT INTO dog VALUES (?, ?)").executeUpdate(withParameters: ["fido", 3])
         
-        expect(self.database.numberOfRowsChangedInLastQuery()) == 1
+        expect(self.database.numberOfChanges) == 1
     }
     
     func testContainsTableReturnsFalseIfTableDoesNotExist() {

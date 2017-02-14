@@ -20,10 +20,12 @@ open class DatabaseConnection {
     fileprivate let location: URL
     
     open var isOpen: Bool
+    open var isTransactionInProgress: Bool
     
     public init(location: URL) {
         self.location = location
         self.isOpen   = false
+        self.isTransactionInProgress = false
     }
     
     /** Open the database connection */
@@ -49,13 +51,24 @@ open class DatabaseConnection {
      - returns:          a prepared statement
      */
     open func statement(for query: String) throws -> Statement {
+        
         guard let handle = databaseHandle else {
-            throw TinyError.libraryMisuse
+            throw TinyError.databaseIsClosed(message: "Call `open()` before trying to access the database")
         }
         
         let statement: Statement = Statement(query)
         
-        try statement.prepareForDatabase(handle)
+        do {
+            try statement.prepareForDatabase(handle)
+        } catch (TinyError.other(let message)) {
+            if message.contains("SQLite returned result code 0") {
+                throw TinyError.invalidQuery(query: query)
+            }
+            
+            throw TinyError.other(message: message)
+        } catch (let error) {
+            throw error
+        }
         
         return statement
     }
@@ -66,23 +79,41 @@ extension DatabaseConnection {
     
     /** Begin a transaction */
     func beginTransaction() throws {
+        guard isTransactionInProgress == false else {
+            throw TinyError.transactionInProgress(message: "Nesting transactions causes a deadlock")
+        }
+        
         try statement(for: "BEGIN TRANSACTION")
             .executeUpdate()
             .finalize()
+        
+        isTransactionInProgress = true
     }
     
     /** End an ongoing transaction */
     func endTransaction() throws {
+        guard isTransactionInProgress == true else {
+            throw TinyError.noTransactionInProgress
+        }
+        
         try statement(for: "END TRANSACTION")
             .executeUpdate()
             .finalize()
+        
+        isTransactionInProgress = false
     }
     
     /** Rollback a transaction */
     func rollbackTransaction() throws {
+        guard isTransactionInProgress == true else {
+            throw TinyError.noTransactionInProgress
+        }
+        
         try statement(for: "ROLLBACK TRANSACTION")
             .executeUpdate()
             .finalize()
+        
+        isTransactionInProgress = false
     }
 }
 
@@ -90,12 +121,12 @@ extension DatabaseConnection {
 extension DatabaseConnection {
     
     /** Number of rows affected by INSERT, UPDATE, or DELETE since the database was opened */
-    public func numberOfRowsChangedInLastQuery() -> Int {
+    var numberOfChanges: Int {
         return Int(sqlite3_changes(databaseHandle))
     }
     
     /** Total number of rows affected by INSERT, UPDATE, or DELETE since the database was opened */
-    public func totalNumberOfRowsChanged() -> Int {
+    var totalNumberOfChanges: Int {
         return Int(sqlite3_total_changes(databaseHandle))
     }
     

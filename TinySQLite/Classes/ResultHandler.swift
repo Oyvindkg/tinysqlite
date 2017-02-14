@@ -19,7 +19,7 @@ internal struct ResultHandler {
     
     static func verifyResult(code resultCode: Int32) throws {
         guard isSuccess(resultCode) else {
-            throw TinyError(rawValue: resultCode)!
+            throw TinyError.other(message: "SQLite returned result code \(resultCode), indicating an error. SQLite result codes are described here: https://www.sqlite.org/c3ref/c_abort.html")
         }
     }
 }
