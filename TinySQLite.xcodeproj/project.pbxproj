@@ -11,10 +11,10 @@
 		390427381E51FFB300113218 /* TinySQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 390688E81D940E7300F94658 /* TinySQLite.framework */; };
 		390427431E5202D700113218 /* Nimble.framework in Resources */ = {isa = PBXBuildFile; fileRef = 3904273E1E52013400113218 /* Nimble.framework */; };
 		390427441E52040100113218 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3904273E1E52013400113218 /* Nimble.framework */; };
-		390427471E5217AE00113218 /* TinyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390427461E5217AE00113218 /* TinyError.swift */; };
-		390427491E5217DF00113218 /* ResultHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390427481E5217DF00113218 /* ResultHandler.swift */; };
-		3904274B1E52183C00113218 /* SQLiteValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904274A1E52183C00113218 /* SQLiteValue.swift */; };
 		3904274D1E52194800113218 /* ResultHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904274C1E52194800113218 /* ResultHandlerTests.swift */; };
+		390427511E531DC500113218 /* ResultHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904274E1E531DC500113218 /* ResultHandler.swift */; };
+		390427521E531DC500113218 /* SQLiteValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3904274F1E531DC500113218 /* SQLiteValue.swift */; };
+		390427531E531DC500113218 /* TinyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390427501E531DC500113218 /* TinyError.swift */; };
 		390688ED1D940E7300F94658 /* TinySQLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 390688EB1D940E7300F94658 /* TinySQLite.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		390688F61D940EFC00F94658 /* DatabaseConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390688F31D940EFC00F94658 /* DatabaseConnection.swift */; };
 		390688F71D940EFC00F94658 /* DatabaseQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390688F41D940EFC00F94658 /* DatabaseQueue.swift */; };
@@ -51,10 +51,10 @@
 		390427351E51FFB300113218 /* DatabaseConnectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseConnectionTests.swift; sourceTree = "<group>"; };
 		390427371E51FFB300113218 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3904273E1E52013400113218 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
-		390427461E5217AE00113218 /* TinyError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TinyError.swift; sourceTree = "<group>"; };
-		390427481E5217DF00113218 /* ResultHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultHandler.swift; sourceTree = "<group>"; };
-		3904274A1E52183C00113218 /* SQLiteValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteValue.swift; sourceTree = "<group>"; };
 		3904274C1E52194800113218 /* ResultHandlerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultHandlerTests.swift; sourceTree = "<group>"; };
+		3904274E1E531DC500113218 /* ResultHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ResultHandler.swift; path = Classes/ResultHandler.swift; sourceTree = "<group>"; };
+		3904274F1E531DC500113218 /* SQLiteValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SQLiteValue.swift; path = Classes/SQLiteValue.swift; sourceTree = "<group>"; };
+		390427501E531DC500113218 /* TinyError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TinyError.swift; path = Classes/TinyError.swift; sourceTree = "<group>"; };
 		390688E81D940E7300F94658 /* TinySQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TinySQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		390688EB1D940E7300F94658 /* TinySQLite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TinySQLite.h; sourceTree = "<group>"; };
 		390688EC1D940E7300F94658 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -117,12 +117,12 @@
 		390688EA1D940E7300F94658 /* TinySQLite */ = {
 			isa = PBXGroup;
 			children = (
+				3904274E1E531DC500113218 /* ResultHandler.swift */,
+				3904274F1E531DC500113218 /* SQLiteValue.swift */,
+				390427501E531DC500113218 /* TinyError.swift */,
 				390688F31D940EFC00F94658 /* DatabaseConnection.swift */,
 				390688F41D940EFC00F94658 /* DatabaseQueue.swift */,
 				390688F51D940EFC00F94658 /* Statement.swift */,
-				390427481E5217DF00113218 /* ResultHandler.swift */,
-				3904274A1E52183C00113218 /* SQLiteValue.swift */,
-				390427461E5217AE00113218 /* TinyError.swift */,
 				390688EB1D940E7300F94658 /* TinySQLite.h */,
 				390688EC1D940E7300F94658 /* Info.plist */,
 			);
@@ -280,10 +280,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				390427471E5217AE00113218 /* TinyError.swift in Sources */,
-				390427491E5217DF00113218 /* ResultHandler.swift in Sources */,
 				390688F81D940EFC00F94658 /* Statement.swift in Sources */,
-				3904274B1E52183C00113218 /* SQLiteValue.swift in Sources */,
+				390427521E531DC500113218 /* SQLiteValue.swift in Sources */,
+				390427511E531DC500113218 /* ResultHandler.swift in Sources */,
+				390427531E531DC500113218 /* TinyError.swift in Sources */,
 				390688F71D940EFC00F94658 /* DatabaseQueue.swift in Sources */,
 				390688F61D940EFC00F94658 /* DatabaseConnection.swift in Sources */,
 			);
