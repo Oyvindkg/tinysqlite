@@ -61,7 +61,7 @@ open class DatabaseConnection {
         do {
             try statement.prepareForDatabase(handle)
         } catch (TinyError.other(let message)) {
-            if message.contains("SQLite returned result code 0") {
+            if message.contains("SQLite returned result code 1") {
                 throw TinyError.invalidQuery(query: query)
             }
             

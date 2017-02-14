@@ -104,14 +104,14 @@ try databaseQueue.transaction { (database) in
 TinySQLite is available through [CocoaPods](http://cocoapods.org). To install, simply add the following line to your Podfile:
 
 ```ruby
-pod "TinySQLite", "0.4.3"
+pod "TinySQLite", "0.4.4"
 ```
 
 ### Carthage
 TinySQLite is available through [Carthage](https://github.com/Carthage/Carthage). To install, simply add the following line to your Cartfile:
 
 ```ruby
-github "Oyvindkg/tinysqlite" "0.4.3"
+github "Oyvindkg/tinysqlite" "0.4.4"
 ```
 
 ## Author
