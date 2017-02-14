@@ -21,7 +21,7 @@ open class DatabaseQueue {
     }
     
     /** Execute a synchronous transaction on the database in a sequential queue */
-    open func transaction(_ block: ((_ database: DatabaseConnection) throws -> Void)) throws {
+    open func transaction(_ block: ((DatabaseConnection) throws -> Void)) throws {
        
         try database { (database) -> Void in
             
@@ -41,7 +41,7 @@ open class DatabaseQueue {
     }
     
     /** Execute synchronous queries on the database in a sequential queue */
-    open func database(_ block: ((_ database: DatabaseConnection) throws -> Void)) throws {
+    open func database(_ block: ((DatabaseConnection) throws -> Void)) throws {
         
         /* Run the query in a sequential queue to avoid threading related problems */
         try DatabaseQueue.queue.sync { () -> Void in

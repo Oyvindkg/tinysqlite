@@ -44,7 +44,7 @@ public enum TinyError: Int32, Error, CustomStringConvertible {
     case numberOfBindings
     
     public var description: String {
-        return "TinySQLite.Error: \(self.message) (\(rawValue))"
+        return "TinySQLite.TinyError: \(self.message) (\(rawValue))"
     }
     
     public var message: String {

@@ -111,9 +111,9 @@ extension DatabaseConnection {
     /**
      Check if a table exists
      
-     - parameter tableName:  name of the table
+     - parameter tableName: name of the table
      
-     - returns:              boolean indicating whether the table exists, or not
+     - returns: `true` if the database contains a table with the specified name
      */
     public func contains(table tableName: String) throws -> Bool {
         let query = "SELECT name FROM sqlite_master WHERE type='table' AND name=?"
@@ -121,12 +121,26 @@ extension DatabaseConnection {
         return try resultExists(for: query, withParameters: [tableName])
     }
     
+    /**
+     Check if a table exists
+     
+     - parameter indexName: name of the index
+     
+     - returns: `true` if the database contains an index with the specified name
+     */
     public func contains(index indexName: String) throws -> Bool {
         let query = "SELECT name FROM sqlite_master WHERE type='index' AND name=?"
         
         return try resultExists(for: query, withParameters: [indexName])
     }
     
+    /**
+     Check if a table exists
+     
+     - parameter viewName: name of the view
+     
+     - returns: `true` if the database contains a view with the specified name
+     */
     public func contains(view viewName: String) throws -> Bool {
         let query = "SELECT name FROM sqlite_master WHERE type='view' AND name=?"
         
