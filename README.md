@@ -2,6 +2,7 @@
 [![Version](https://img.shields.io/cocoapods/v/TinySQLite.svg?style=flat)](http://cocoapods.org/pods/TinySQLite)
 [![License](https://img.shields.io/cocoapods/l/TinySQLite.svg?style=flat)](http://cocoapods.org/pods/TinySQLite)
 [![Platform](https://img.shields.io/cocoapods/p/TinySQLite.svg?style=flat)](http://cocoapods.org/pods/TinySQLite)
+[![Swift](https://img.shields.io/badge/swift-3-brightgreen.svg?style=flat)](http://cocoapods.org/pods/TinySQLite)
 
 ![alt text] (http://i.imgur.com/KvtukKk.png "Logo")
 
@@ -15,23 +16,13 @@ A lightweight SQLite wrapper written in Swift
 - [x] Thread safe
 - [x] Supports all native Swift types
 
-####Valid datatypes
-- [x] String
-- [x] Character
-- [x] Bool
-- [x] All integer types (signed and unsigned)
-- [x] Float
-- [x] Double
-- [x] NSString
-- [x] NSData
-- [x] NSDate (represented as UNIX timestamps)
-- [x] NSNumber
-
 ## Usage
 ### Creating the database object
-Provide the path to an existing or new database
+Provide the `DatabaseQueue` with a file URL. If the database file exists, the existing database file will be used. If not, a new database will be created automatically.
 ```Swift
-let databaseQueue = DatabaseQueue(path: path)
+let location = URL(fileURLWithPath: "path/to/database.sqlite")
+
+let databaseQueue = DatabaseQueue(location: location)
 ```
 ### Creating queries
 All valid SQLite queries are accepted by TinySQLite
@@ -40,24 +31,32 @@ To use automatic binding, replace the values in the statement by '?', and provid
 
 ```Swift
 let query = "INSERT INTO YourTable (column, otherColumn) VALUES (?, ?)"
-let values = [1, "A value"]
+
+let parameters = [1, "A value"]
 ```
 
 To use automatic named binding, replace the values in the statement by ':\<name>', and provide the values in a dictionary
 
 ```Swift
 let query = "INSERT INTO YourTable (column, otherColumn) VALUES (:column, :otherColumn)"
-let namedValues = ["column": 1, "otherColumn": "A value"]
+
+let parameterMapping = [
+    "column": 1, 
+    "otherColumn": "A value"
+]
 ```
 
 ### Executing updates
 Execute an update in the database
 ```Swift
 try databaseQueue.database { (database) in
-    let statement = try database.prepare(query)
-    statement.executeUpdate(values)
-    statement.executeUpdate(namedValues)
-    statemen.finalize()
+    let statement = try database.statement(for: query)
+    
+    statement.executeUpdate()
+    statement.executeUpdate(withParameters: parameters)
+    statement.executeUpdate(withParameterMapping: parameterMapping)
+    
+    statement.finalize()
 }
 ```
 
@@ -66,13 +65,20 @@ try databaseQueue.database { (database) in
 Execute a query to the database.
 ```Swift
 try databaseQueue.database { (database) in
-    let statement = try database.prepare(query)
-                                .execute()
+    let statement = try database.statement(for:query)
+    
+    try statement.execute()
     
     for row in statement {
-        row.integerForColumn(2) // Returns an integer from the second column in the row
-        row.dateForColumn("deadline") // Returns a date from the column called 'deadline'
-        row.dictionary // Returns a dictionary representing the row
+    
+        /* Get an integer from the second column in the row */
+        row.integerForColumn(at: 2)
+        
+        /* Get a date from the column called 'deadline' */
+        row.dateForColumn("deadline") 
+        
+        /* Get a dictionary representing the row */
+        row.dictionary 
     }
     
     statement.finalize()
@@ -84,21 +90,28 @@ To improve performance, and prevent partial updates when executing multiple quer
 If an error is thrown in the block, all changes are rolled back. 
 ```Swift
 try databaseQueue.transaction { (database) in
-    try database.prepare(query)
-                .executeUpdate()
-                .executeUpdate()
-                .executeUpdate()
+    try database.statement(for: query)
+                .executeUpdate(withParameters: someParameters)
+                .executeUpdate(withParameters: someOtherParameters)
+                .executeUpdate(withParameters: evenMoreParameters)
                 .finalize()
 }
 ```
 
 ## Installation
 
-TinySQLite is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+### Cocoapods
+TinySQLite is available through [CocoaPods](http://cocoapods.org). To install, simply add the following line to your Podfile:
 
 ```ruby
 pod "TinySQLite"
+```
+
+### Carthage
+TinySQLite is available through [Carthage](https://github.com/Carthage/Carthage). To install, simply add the following line to your Cartfile:
+
+```ruby
+github "Oyvindkg/tinysqlite" "0.4.0"
 ```
 
 ## Author
@@ -107,4 +120,4 @@ pod "TinySQLite"
 
 ## License
 
-TinySQLite is available under the MIT license. See the LICENSE file for more info.
+TinySQLite is available under the MIT license. See the _LICENSE_ file for more info.
