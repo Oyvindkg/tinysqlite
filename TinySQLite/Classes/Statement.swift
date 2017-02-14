@@ -16,6 +16,7 @@ public enum Datatype: String {
     case Null       = "NULL"
 }
 
+//TODO: Dates should be stored as ISO strings to preserve time xone information etc.
 public class Statement {
     fileprivate var statementHandle: OpaquePointer?
     
@@ -179,6 +180,7 @@ public class Statement {
         
         for (index, value) in parameters.enumerated() {
             try bind(value: value, to: Int32(index+1))
+            
             bindCount += 1
         }
         

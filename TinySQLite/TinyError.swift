@@ -112,7 +112,7 @@ public enum TinyError: Int32, Error, CustomStringConvertible {
         case .done:
             return "sqlite3_step() has finished executing"
         case .bindingType:
-            return "Tried to bind an unrecognized data type, or an NSNumber wrapping an unrecognied type"
+            return "Tried to bind an unrecognized data type, or an NSNumber wrapping an unrecognized type"
         case .numberOfBindings:
             return "Incorrect number of bindings"
         }
