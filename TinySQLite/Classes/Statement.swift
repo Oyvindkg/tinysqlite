@@ -16,20 +16,20 @@ public enum Datatype: String {
     case Null       = "NULL"
 }
 
-open class Statement {
-    fileprivate var handle: OpaquePointer?
+public class Statement {
+    fileprivate var statementHandle: OpaquePointer?
     
     public let query: String
     
     var isBusy: Bool {
-        return NSNumber(value: sqlite3_stmt_busy(handle) as Int32).boolValue
+        return NSNumber(value: sqlite3_stmt_busy(statementHandle) as Int32).boolValue
     }
     
     lazy var indexToNameMapping: [Int32: String] = {
         var mapping: [Int32: String] = [:]
         
-        for index in 0..<sqlite3_column_count(self.handle) {
-            let name =  NSString(utf8String: sqlite3_column_name(self.handle, index)) as! String
+        for index in 0..<sqlite3_column_count(self.statementHandle) {
+            let name =  NSString(utf8String: sqlite3_column_name(self.statementHandle, index)) as! String
             mapping[index] = name
         }
         
@@ -39,8 +39,8 @@ open class Statement {
     lazy var nameToIndexMapping: [String: Int32] = {
         var mapping: [String: Int32] = [:]
         
-        for index in 0..<sqlite3_column_count(self.handle) {
-            let name =  NSString(utf8String: sqlite3_column_name(self.handle, index)) as! String
+        for index in 0..<sqlite3_column_count(self.statementHandle) {
+            let name =  NSString(utf8String: sqlite3_column_name(self.statementHandle, index)) as! String
             mapping[name] = index
         }
         
@@ -50,12 +50,12 @@ open class Statement {
     
     public init(_ query: String, handle: OpaquePointer? = nil) {
         self.query = query
-        self.handle = handle
+        self.statementHandle = handle
     }
     
     /** Next row in results */
-    open func step() throws -> Bool {
-        let result = sqlite3_step(handle)
+    public func step() throws -> Bool {
+        let result = sqlite3_step(statementHandle)
         
         try ResultHandler.verifyResult(code: result)
         
@@ -67,13 +67,13 @@ open class Statement {
     }
     
     /** Clear memory */
-    open func finalize() throws {
-        try ResultHandler.verifyResult(code: sqlite3_finalize(handle))
+    public func finalize() throws {
+        try ResultHandler.verifyResult(code: sqlite3_finalize(statementHandle))
     }
     
     /** ID of the last row inserted */
-    open func lastInsertRowId() -> Int? {
-        let id = Int(sqlite3_last_insert_rowid(handle))
+    public func lastInsertRowId() -> Int? {
+        let id = Int(sqlite3_last_insert_rowid(statementHandle))
         
         return id > 0 ? id : nil
     }
@@ -87,8 +87,8 @@ open class Statement {
      
      - returns:          `self`
      */
-    @discardableResult open func executeUpdate(values: [SQLiteValue?] = []) throws -> Statement {
-        _ = try execute(values: values)
+    @discardableResult public func executeUpdate(withParameters parameters: [SQLiteValue?] = []) throws -> Statement {
+        _ = try execute(withParameters: parameters)
         _ = try step()
         
         return self
@@ -101,8 +101,8 @@ open class Statement {
      
      - returns:              `self`
      */
-    @discardableResult open func executeUpdate(vlaues dictionary: [String: SQLiteValue?]) throws -> Statement {
-        _ = try execute(values: dictionary)
+    @discardableResult public func executeUpdate(withParameterMapping parameterMapping: [String: SQLiteValue?]) throws -> Statement {
+        _ = try execute(withParameterMapping: parameterMapping)
         _ = try step()
         
         return self
@@ -116,8 +116,8 @@ open class Statement {
      
     - returns:              `self`
     */
-    open func execute(values: [String: SQLiteValue?]) throws -> Statement {
-        try bind(values: values)
+    public func execute(withParameterMapping parameterMapping: [String: SQLiteValue?]) throws -> Statement {
+        try bind(parameterMapping: parameterMapping)
         
         return self
     }
@@ -130,8 +130,8 @@ open class Statement {
      
     - returns:          `self`
     */
-    open func execute(values: [SQLiteValue?] = []) throws -> Statement {
-        try bind(values: values)
+    public func execute(withParameters parameters: [SQLiteValue?] = []) throws -> Statement {
+        try bind(parameters)
         
         return self
     }
@@ -139,46 +139,46 @@ open class Statement {
     // MARK: - Internal methods
     
     fileprivate func reset() throws {
-        try ResultHandler.verifyResult(code: sqlite3_reset(handle))
+        try ResultHandler.verifyResult(code: sqlite3_reset(statementHandle))
     }
     
     fileprivate func clearBindings() throws {
-        guard handle != nil else {
+        guard statementHandle != nil else {
             return
         }
         
-        try ResultHandler.verifyResult(code: sqlite3_clear_bindings(handle))
+        try ResultHandler.verifyResult(code: sqlite3_clear_bindings(statementHandle))
     }
     
     internal func prepareForDatabase(_ databaseHandle: OpaquePointer) throws {
-        try ResultHandler.verifyResult(code: sqlite3_prepare_v2(databaseHandle, query, -1, &handle, nil))
+        try ResultHandler.verifyResult(code: sqlite3_prepare_v2(databaseHandle, query, -1, &statementHandle, nil))
     }
     
-    fileprivate func bind(values dictionary: [String: SQLiteValue?]) throws {
+    fileprivate func bind(parameterMapping: [String: SQLiteValue?]) throws {
         
-        let totalBindCount = sqlite3_bind_parameter_count(handle)
+        let totalBindCount = sqlite3_bind_parameter_count(statementHandle)
         
-        var values: [SQLiteValue?] = Array(repeating: nil, count: Int(totalBindCount))
+        var parameters: [SQLiteValue?] = Array(repeating: nil, count: Int(totalBindCount))
         
-        for (name, value) in dictionary {
-            let index = sqlite3_bind_parameter_index(handle, ":\(name)")
+        for (name, value) in parameterMapping {
+            let index = sqlite3_bind_parameter_index(statementHandle, ":\(name)")
             
-            values[index-1] = value
+            parameters[index-1] = value
         }
         
-        try bind(values: values)
+        try bind(parameters)
     }
     
-    fileprivate func bind(values: [SQLiteValue?]) throws {
+    fileprivate func bind(_ parameters: [SQLiteValue?]) throws {
         try reset()
         try clearBindings()
         
-        let totalBindCount = sqlite3_bind_parameter_count(handle)
+        let totalBindCount = sqlite3_bind_parameter_count(statementHandle)
         
         var bindCount: Int32 = 0
         
-        for (index, value) in values.enumerated() {
-            try bind(value: value, forIndex: Int32(index+1))
+        for (index, value) in parameters.enumerated() {
+            try bind(value: value, to: Int32(index+1))
             bindCount += 1
         }
         
@@ -189,9 +189,9 @@ open class Statement {
     
     // MARK: - Private methods
     
-    fileprivate func bind(value: SQLiteValue?, forIndex index: Int32) throws {
+    fileprivate func bind(value: SQLiteValue?, to index: Int32) throws {
         if value == nil {
-            try ResultHandler.verifyResult(code: sqlite3_bind_null(handle, index))
+            try ResultHandler.verifyResult(code: sqlite3_bind_null(statementHandle, index))
             return
         }
         
@@ -201,59 +201,59 @@ open class Statement {
             
             /* Bind special values */
         case let dateValue as Date:
-            result = sqlite3_bind_double(handle, index, dateValue.timeIntervalSince1970)
+            result = sqlite3_bind_double(statementHandle, index, dateValue.timeIntervalSince1970)
             
         case let dataValue as Data:
             if dataValue.count == 0 {
                 print("[ WARNING: Data values with zero bytes are treated as NULL by SQLite ]")
             }
-            result = sqlite3_bind_blob(handle, index, (dataValue as NSData).bytes, Int32(dataValue.count), SQLITE_TRANSIENT)
+            result = sqlite3_bind_blob(statementHandle, index, (dataValue as NSData).bytes, Int32(dataValue.count), SQLITE_TRANSIENT)
             
         case let numberValue as NSNumber:
             result = try bind(number: numberValue, forIndex: index)
             
             /* Bind integer values */
         case let integerValue as Int:
-            result = sqlite3_bind_int64(handle, index, Int64(integerValue))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(integerValue))
         case let integerValue as UInt:
-            result = sqlite3_bind_int64(handle, index, Int64(integerValue))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(integerValue))
         case let integerValue as Int8:
-            result = sqlite3_bind_int64(handle, index, Int64(integerValue))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(integerValue))
         case let integerValue as Int16:
-            result = sqlite3_bind_int64(handle, index, Int64(integerValue))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(integerValue))
         case let integerValue as Int32:
-            result = sqlite3_bind_int64(handle, index, Int64(integerValue))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(integerValue))
         case let integerValue as Int64:
-            result = sqlite3_bind_int64(handle, index, Int64(integerValue))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(integerValue))
         case let integerValue as UInt8:
-            result = sqlite3_bind_int64(handle, index, Int64(integerValue))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(integerValue))
         case let integerValue as UInt16:
-            result = sqlite3_bind_int64(handle, index, Int64(integerValue))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(integerValue))
         case let integerValue as UInt32:
-            result = sqlite3_bind_int64(handle, index, Int64(integerValue))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(integerValue))
         case let integerValue as UInt64:
-            result = sqlite3_bind_int64(handle, index, Int64(integerValue))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(integerValue))
             
             /* Bind boolean values */
         case let boolValue as Bool:
-            result = sqlite3_bind_int64(handle, index, boolValue ? 1 : 0)
+            result = sqlite3_bind_int64(statementHandle, index, boolValue ? 1 : 0)
             
             /* Bind real values */
         case let floatValue as Float:
-            result = sqlite3_bind_double(handle, index, Double(floatValue))
+            result = sqlite3_bind_double(statementHandle, index, Double(floatValue))
         case let doubleValue as Double:
-            result = sqlite3_bind_double(handle, index, doubleValue)
+            result = sqlite3_bind_double(statementHandle, index, doubleValue)
             
             /* Bind text values */
         case let stringValue as String:
-            result = sqlite3_bind_text(handle, index, stringValue, -1, SQLITE_TRANSIENT)
+            result = sqlite3_bind_text(statementHandle, index, stringValue, -1, SQLITE_TRANSIENT)
         case let stringValue as NSString:
-            result = sqlite3_bind_text(handle, index, stringValue.utf8String, -1, SQLITE_TRANSIENT)
+            result = sqlite3_bind_text(statementHandle, index, stringValue.utf8String, -1, SQLITE_TRANSIENT)
         case let characterValue as Character:
-            result = sqlite3_bind_text(handle, index, String(characterValue), -1, SQLITE_TRANSIENT)
+            result = sqlite3_bind_text(statementHandle, index, String(characterValue), -1, SQLITE_TRANSIENT)
             
         default:
-            result = sqlite3_bind_text(handle, index, value as! String, -1, SQLITE_TRANSIENT)
+            result = sqlite3_bind_text(statementHandle, index, value as! String, -1, SQLITE_TRANSIENT)
         }
         
         try ResultHandler.verifyResult(code: result)
@@ -272,31 +272,31 @@ open class Statement {
         
         switch type {
         case "c":
-            result = sqlite3_bind_int64(handle, index, Int64(number.int8Value))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(number.int8Value))
         case "i":
-            result = sqlite3_bind_int64(handle, index, Int64(number.int32Value))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(number.int32Value))
         case "s":
-            result = sqlite3_bind_int64(handle, index, Int64(number.int16Value))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(number.int16Value))
         case "l":
-            result = sqlite3_bind_int64(handle, index, Int64(number.intValue))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(number.intValue))
         case "q":
-            result = sqlite3_bind_int64(handle, index, number.int64Value)
+            result = sqlite3_bind_int64(statementHandle, index, number.int64Value)
         case "C":
-            result = sqlite3_bind_int64(handle, index, Int64(number.int8Value))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(number.int8Value))
         case "I":
-            result = sqlite3_bind_int64(handle, index, Int64(number.uint32Value))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(number.uint32Value))
         case "S":
-            result = sqlite3_bind_int64(handle, index, Int64(number.uint16Value))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(number.uint16Value))
         case "L":
-            result = sqlite3_bind_int64(handle, index, Int64(number.uintValue))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(number.uintValue))
         case "Q":
-            result = sqlite3_bind_int64(handle, index, Int64(number.uint64Value))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(number.uint64Value))
         case "B":
-            result = sqlite3_bind_int64(handle, index, Int64(number.boolValue ? 1 : 0))
+            result = sqlite3_bind_int64(statementHandle, index, Int64(number.boolValue ? 1 : 0))
         case "f", "d":
-            result = sqlite3_bind_double(handle, index, number.doubleValue)
+            result = sqlite3_bind_double(statementHandle, index, number.doubleValue)
         default:
-            result = sqlite3_bind_text(handle, index, number.description, -1, SQLITE_TRANSIENT)
+            result = sqlite3_bind_text(statementHandle, index, number.description, -1, SQLITE_TRANSIENT)
         }
         
         return result
@@ -312,7 +312,7 @@ extension Statement {
     
     /** Returns the datatype for the column given by an index */
     public func typeForColumn(at index: Int32) -> Datatype? {
-        switch sqlite3_column_type(handle, index) {
+        switch sqlite3_column_type(statementHandle, index) {
         case SQLITE_INTEGER:
             return .Integer
         case SQLITE_FLOAT:
@@ -330,7 +330,7 @@ extension Statement {
     
     /** Returns a value for the column given by the index based on the columns datatype */
     public func valueForColumn(at index: Int32) -> SQLiteValue? {
-        let columnType = sqlite3_column_type(handle, index)
+        let columnType = sqlite3_column_type(statementHandle, index)
         
         switch columnType {
         case SQLITE_INTEGER:
@@ -361,7 +361,7 @@ extension Statement {
         if typeForColumn(at: index) == .Null {
             return nil
         }
-        return sqlite3_column_int64(handle, index)
+        return sqlite3_column_int64(statementHandle, index)
     }
     
     /** Returns a 32-bit integer for the column given by the index */
@@ -433,7 +433,7 @@ extension Statement {
         if typeForColumn(at: index) == .Null {
             return nil
         }
-        return sqlite3_column_double(handle, index)
+        return sqlite3_column_double(statementHandle, index)
     }
     
     /** Returns a float for the column given by the index */
@@ -458,8 +458,8 @@ extension Statement {
             return nil
         }
         
-        let byteCount = Int(sqlite3_column_bytes(handle, index))
-        let bytes     = sqlite3_column_blob(handle, index).load(as: Array<UInt8>.self)
+        let byteCount = Int(sqlite3_column_bytes(statementHandle, index))
+        let bytes     = sqlite3_column_blob(statementHandle, index).load(as: Array<UInt8>.self)
         
         return Data(bytes: bytes, count: byteCount)
     }
@@ -489,12 +489,12 @@ extension Statement {
     
     /** Returns a string for the column given by the index */
     public func nsstringForColumn(at index: Int32) -> NSString? {
-        return NSString(bytes: sqlite3_column_text(handle, index), length: Int(sqlite3_column_bytes(handle, index)), encoding: String.Encoding.utf8.rawValue)
+        return NSString(bytes: sqlite3_column_text(statementHandle, index), length: Int(sqlite3_column_bytes(statementHandle, index)), encoding: String.Encoding.utf8.rawValue)
     }
     
     /** Returns a number for the column given by the index */
     public func numberForColumn(at index: Int32) -> NSNumber? {
-        switch sqlite3_column_type(handle, index) {
+        switch sqlite3_column_type(statementHandle, index) {
         case SQLITE_INTEGER:
             return integerForColumn(at: index) as NSNumber?
         case SQLITE_FLOAT:
@@ -521,7 +521,7 @@ extension Statement {
     public var dictionary: [String: SQLiteValue?] {
         var dictionary: [String: SQLiteValue?] = [:]
         
-        for i in 0..<sqlite3_column_count(handle) {
+        for i in 0..<sqlite3_column_count(statementHandle) {
             dictionary[indexToNameMapping[i]!] = valueForColumn(at: i)
         }
         

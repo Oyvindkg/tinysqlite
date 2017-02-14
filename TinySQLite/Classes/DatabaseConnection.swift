@@ -48,7 +48,7 @@ open class DatabaseConnection {
      
      - returns:          a prepared statement
      */
-    open func prepare(query: String) throws -> Statement {
+    open func statement(for query: String) throws -> Statement {
         guard let handle = databaseHandle else {
             throw TinyError.libraryMisuse
         }
@@ -66,21 +66,21 @@ extension DatabaseConnection {
     
     /** Begin a transaction */
     func beginTransaction() throws {
-        try self.prepare(query: "BEGIN TRANSACTION")
+        try statement(for: "BEGIN TRANSACTION")
             .executeUpdate()
             .finalize()
     }
     
     /** End an ongoing transaction */
     func endTransaction() throws {
-        try self.prepare(query: "END TRANSACTION")
+        try statement(for: "END TRANSACTION")
             .executeUpdate()
             .finalize()
     }
     
     /** Rollback a transaction */
     func rollbackTransaction() throws {
-        try self.prepare(query: "ROLLBACK TRANSACTION")
+        try statement(for: "ROLLBACK TRANSACTION")
             .executeUpdate()
             .finalize()
     }
@@ -115,10 +115,26 @@ extension DatabaseConnection {
      
      - returns:              boolean indicating whether the table exists, or not
      */
-    public func containsTable(_ tableName: String) throws -> Bool {
+    public func contains(table tableName: String) throws -> Bool {
         let query = "SELECT name FROM sqlite_master WHERE type='table' AND name=?"
         
-        let statement = try prepare(query: query).execute(values: [tableName])
+        return try resultExists(for: query, withParameters: [tableName])
+    }
+    
+    public func contains(index indexName: String) throws -> Bool {
+        let query = "SELECT name FROM sqlite_master WHERE type='index' AND name=?"
+        
+        return try resultExists(for: query, withParameters: [indexName])
+    }
+    
+    public func contains(view viewName: String) throws -> Bool {
+        let query = "SELECT name FROM sqlite_master WHERE type='view' AND name=?"
+        
+        return try resultExists(for: query, withParameters: [viewName])
+    }
+    
+    private func resultExists(for query: String, withParameters parameters: [SQLiteValue?]) throws -> Bool {
+        let statement = try self.statement(for: query).execute(withParameters: parameters)
         
         /* Finalize the statement if necessary */
         defer {
